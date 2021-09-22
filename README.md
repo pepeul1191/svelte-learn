@@ -107,3 +107,9 @@ Then, from within your project folder:
 npm run build
 surge public my-project.surge.sh
 ```
+
+---
+
+Fuentes:
+
++ https://stackoverflow.com/questions/48836575/can-i-have-multiple-entry-points-using-rollup-with-gulp
