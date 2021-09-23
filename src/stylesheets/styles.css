@@ -113,3 +113,7 @@ td{
 #app{
   background: white;
 }
+
+.btn, input[type="password"], input[type="text"]{
+  border-radius: 0px !important;
+}

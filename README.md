@@ -117,3 +117,4 @@ Fuentes:
 + https://github.com/EmilTholin/svelte-routing
 + https://lokalise.com/blog/svelte-i18n/
 + https://svelte.dev/repl/803c5f09233349d18365ed5583faaf0e?version=3.9.2
++ https://github.com/EmilTholin/svelte-routing/blob/master/CHANGELOG.md#140

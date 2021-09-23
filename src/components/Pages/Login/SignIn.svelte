@@ -2,6 +2,9 @@
   import { navigate } from 'svelte-routing';
   import { onMount } from 'svelte';
 
+  let user;
+  let email;
+
   onMount(() => {
 		console.log('sign in');
 	});
@@ -17,10 +20,10 @@
   <span class="extraData"></span>
   <!--USER -->
   <label for="user" class="sr-only">User</label>
-  <input type="text" id="user" class="form-control" placeholder="Usuario" required="" autofocus="" name="user">
+  <input type="text" id="user" class="form-control" placeholder="Usuario" required="" autofocus="" name="user" bind:value={user}>
   <!--EMAIL -->
   <label for="email" class="sr-only">email</label>
-  <input type="email" id="email" class="form-control" placeholder="Correo" required="" autofocus="" name="email">
+  <input type="email" id="email" class="form-control" placeholder="Correo" required="" autofocus="" name="email" bind:value={email}>
   <!--CSRF -->
 
   <!--PASS -->
@@ -37,7 +40,7 @@
   </button>
   <!--FooTER LOGIN NAV -->
   <div class="link-login">
-    <a class="" href="/login" on:click|preventDefault={() => {navigate('/login')}}>
+    <a class="" href="/login?user={user}&email={email}" on:click|preventDefault={() => {navigate(`/login?user=${user}&email=${email}`)}}>
       Ingresar
     </a>
     <a id="forgotpassword" class="pull-right" href="/login/reset-password" on:click|preventDefault={() => {navigate('/login/reset-password')}}>

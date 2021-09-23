@@ -6,6 +6,7 @@
 	import { Router, Route } from 'svelte-routing';
   import Index from '../Pages/Login/Index.svelte';
   import SignIn from '../Pages/Login/SignIn.svelte';
+  import Redirect404 from '../Pages/Error/Redirect404.svelte';
   import ResetPassword from '../Pages/Login/ResetPassword.svelte';
   export let url = '';
   export let basepath = '/login';
@@ -20,6 +21,7 @@
     <Route path="/" component="{Index}" />
     <Route path="/sign-in" component="{SignIn}" />
     <Route path="/reset-password" component="{ResetPassword}" />
+    <Route path="/*" component="{Redirect404}" />
   </div>
 </Router>
 

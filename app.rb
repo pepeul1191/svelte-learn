@@ -8,6 +8,11 @@ CONSTANTS = {
   },
 }
 
+def random_string_number(len)
+  o = [('a'..'z'), ('A'..'Z'), (0..9)].map(&:to_a).flatten
+  (0...len).map { o[rand(o.length)] }.join
+end
+
 configure do
   enable :sessions
   set :session_secret, 'a33ac20e2af6b865a35b005c6c8df10e'
@@ -24,4 +29,22 @@ end
     locals = {}
     erb :'login', :locals => locals
   end
+end
+
+post '/upload' do
+  status = 200
+  resp = ''
+  file = params[:pictureFile]
+  if file[:type] == 'application/pdf'
+    extension = file[:filename].split('.').last
+    new_name = random_string_number(30) + '.' + extension # Helper
+    tmp = file[:tempfile].path
+    FileUtils.mv(tmp, 'public/upload/' + new_name)
+    resp = 'upload/' + new_name
+  else
+    resp = 'formato del archivo no es un PDF'
+    status = 500
+  end
+  status status
+  resp
 end

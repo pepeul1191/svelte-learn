@@ -34,6 +34,9 @@
     <a class="pull-right" href="/login/sign-in" on:click|preventDefault={() => {navigate('/login/sign-in')}}>
       Registrarse
     </a>
+    <a id="forgotpassword" class="pull-right" href="/login/reset-passwordsss"  on:click|preventDefault={() => {navigate('/login/reset-passwordssss')}}>
+      Crear usuarios XD
+    </a>
   </div>
   <p class="mt-5 mb-3 text-muted">Powered By <a href="http://softweb.pe/"> Softtware Web Perú</a> © 2017-2018</p>
 </form>

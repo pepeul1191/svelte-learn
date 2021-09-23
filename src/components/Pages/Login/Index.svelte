@@ -1,9 +1,16 @@
 <script>
   import { navigate } from 'svelte-routing';
   import { onMount } from 'svelte';
+  import queryString from 'query-string';
+
+  export let location;
 
   onMount(() => {
-		console.log('index');
+    let queryParams;
+    $: queryParams = queryString.parse(location.search);
+		console.log('index');  
+    //$: queryParams = queryString.parse(location.search);
+    console.log(queryParams);
 	});
 </script>
 

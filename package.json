@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w & rerun app.rb",
+    "dev": "rollup -c -w & ruby app.rb",
     "start": "sirv public --no-clear"
   },
   "devDependencies": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "bootstrap": "^4.6.0",
     "font-awesome": "^4.7.0",
+    "query-string": "^7.0.1",
     "rollup-plugin-copy": "^3.4.0",
     "sirv-cli": "^1.0.0",
     "svelte-routing": "^1.6.0"
