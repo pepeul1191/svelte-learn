@@ -1,5 +1,10 @@
 <script>
   import { navigate } from 'svelte-routing';
+  import { onMount } from 'svelte';
+
+  onMount(() => {
+		console.log('sign in');
+	});
 </script>
 
 <svelte:head>
