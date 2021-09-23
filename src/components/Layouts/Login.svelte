@@ -1,8 +1,8 @@
 <script>
 	import { Router, Link, Route } from 'svelte-routing';
-  import Index from './components/Pages/Login/Index.svelte';
-  import SignIn from './components/Pages/Login/SignIn.svelte';
-  import ResetPassword from './components/Pages/Login/ResetPassword.svelte';
+  import Index from '../Pages/Login/Index.svelte';
+  import SignIn from '../Pages/Login/SignIn.svelte';
+  import ResetPassword from '../Pages/Login/ResetPassword.svelte';
   export let url = '';
   export let basepath = '/login';
 </script>

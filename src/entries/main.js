@@ -1,6 +1,6 @@
-import Login from './Login.svelte';
+import App from '../components/Layouts/App.svelte';
 
-const app = new Login({
+const app = new App({
 	target: document.body,
 	props: {
 		name: 'world'

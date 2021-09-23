@@ -31,7 +31,7 @@ function serve() {
 
 export default [
 	{
-		input: 'src/main.js',
+		input: 'src/entries/main.js',
 		output: {
 			sourcemap: true,
 			format: 'iife',
@@ -85,7 +85,7 @@ export default [
 		}
 	},
 	{
-		input: 'src/login.js',
+		input: 'src/entries/login.js',
 		output: {
 			sourcemap: true,
 			format: 'iife',
