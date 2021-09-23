@@ -114,3 +114,4 @@ Fuentes:
 
 + https://stackoverflow.com/questions/48836575/can-i-have-multiple-entry-points-using-rollup-with-gulp
 + https://stackoverflow.com/questions/59842528/how-to-add-bootstrap-module-in-a-svelte-js-app
++ https://github.com/EmilTholin/svelte-routing

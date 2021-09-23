@@ -1,30 +1,25 @@
 <script>
-	export let name;
+	import { Router, Link, Route } from 'svelte-routing';
+  import Index from './components/Pages/Login/Index.svelte';
+  import SignIn from './components/Pages/Login/SignIn.svelte';
+  import ResetPassword from './components/Pages/Login/ResetPassword.svelte';
+  export let url = '';
+  export let basepath = '/login';
 </script>
 
-<main>
-	<h1>Login {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<Router url="{url}" basepath="{basepath}">
+  <nav>
+    <Link to="/login">Iniciar Sesión</Link>
+    <Link to="/login/sign-in">Crear Cuenta</Link>
+    <Link to="/login/reset-password">Olvidó Su Contraseña</Link>
+  </nav>
+  <div>
+    <Route path="/" component="{Index}" />
+    <Route path="/sign-in" component="{SignIn}" />
+    <Route path="/reset-password" component="{ResetPassword}" />
+  </div>
+</Router>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>
