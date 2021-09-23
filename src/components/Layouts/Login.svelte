@@ -1,4 +1,7 @@
 <script>
+  import 'bootstrap/dist/css/bootstrap.min.css';
+  import '../../stylesheets/styles.css';
+  import '../../stylesheets/login.css';
 	import { Router, Link, Route } from 'svelte-routing';
   import Index from '../Pages/Login/Index.svelte';
   import SignIn from '../Pages/Login/SignIn.svelte';
@@ -8,11 +11,6 @@
 </script>
 
 <Router url="{url}" basepath="{basepath}">
-  <nav>
-    <Link to="/login">Iniciar Sesión</Link>
-    <Link to="/login/sign-in">Crear Cuenta</Link>
-    <Link to="/login/reset-password">Olvidó Su Contraseña</Link>
-  </nav>
   <div>
     <Route path="/" component="{Index}" />
     <Route path="/sign-in" component="{SignIn}" />
