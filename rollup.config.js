@@ -3,6 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import copy from 'rollup-plugin-copy'
 import css from 'rollup-plugin-css-only';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -43,6 +44,14 @@ export default [
 					// enable run-time checks when not in production
 					dev: !production
 				}
+			}),
+			copy({
+				targets: [
+					{ 
+						src: 'node_modules/font-awesome/fonts/*', 
+						dest: 'public/fonts'
+					}
+				]
 			}),
 			// we'll extract any component CSS out into
 			// a separate file - better for performance
