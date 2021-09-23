@@ -1,0 +1,13 @@
+source 'https://rubygems.org'
+
+gem 'rake'
+gem 'sinatra'
+gem 'rerun'
+gem 'rakeup'
+gem 'require_all'
+gem 'rerun'
+gem 'json'
+gem 'sequel'
+gem 'sqlite3'
+gem 'puma'
+gem 'rack'
