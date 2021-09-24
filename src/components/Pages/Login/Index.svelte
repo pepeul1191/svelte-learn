@@ -4,12 +4,11 @@
   import queryString from 'query-string';
 
   export let location;
+  let queryParams;
+  $: queryParams = queryString.parse(location.search);
 
   onMount(() => {
-    let queryParams;
-    $: queryParams = queryString.parse(location.search);
 		console.log('index');  
-    //$: queryParams = queryString.parse(location.search);
     console.log(queryParams);
 	});
 </script>

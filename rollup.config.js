@@ -3,7 +3,8 @@ import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
-import copy from 'rollup-plugin-copy'
+import copy from 'rollup-plugin-copy';
+import json from '@rollup/plugin-json';
 import css from 'rollup-plugin-css-only';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -31,12 +32,12 @@ function serve() {
 
 export default [
 	{
-		input: 'src/entries/main.js',
+		input: 'src/entries/app.js',
 		output: {
 			sourcemap: true,
 			format: 'iife',
 			name: 'app',
-			file: 'public/build/bundle.main.js'
+			file: 'public/build/bundle.app.js'
 		},
 		plugins: [
 			svelte({
@@ -55,8 +56,9 @@ export default [
 			}),
 			// we'll extract any component CSS out into
 			// a separate file - better for performance
-			css({ output: 'bundle.main.css' }),
-
+			css({ output: 'bundle.app.css' }),
+			// json for axios
+			json(),
 			// If you have external dependencies installed from
 			// npm, you'll most likely need these plugins. In
 			// some cases you'll need additional configuration -
@@ -74,14 +76,14 @@ export default [
 
 			// Watch the `public` directory and refresh the
 			// browser on changes when not in production
-			!production && livereload('public'),
+			//!production && livereload('public'),
 
 			// If we're building for production (npm run build
 			// instead of npm run dev), minify
 			production && terser()
 		],
 		watch: {
-			clearScreen: false
+			clearScreen: true
 		}
 	},
 	{

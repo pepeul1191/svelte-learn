@@ -31,10 +31,16 @@ end
   end
 end
 
+get '/' do
+  locals = {}
+  erb :'home', :locals => locals
+end
+
 post '/upload' do
   status = 200
   resp = ''
-  file = params[:pictureFile]
+  file = params[:file]
+  puts file
   if file[:type] == 'application/pdf'
     extension = file[:filename].split('.').last
     new_name = random_string_number(30) + '.' + extension # Helper
