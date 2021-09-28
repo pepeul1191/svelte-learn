@@ -12,10 +12,10 @@
         url={`${BASE_URL}upload`} 
         baseUrlFile={`${BASE_URL}`}  
         chooserButton={
-          {label: 'param1', icon: 'fa-grav', class: 'btn-danger'}
+          {label: 'Search', icon: 'fa-grav', class: 'btn-danger'}
         }
         uploadButton={
-          {label: 'param2', icon: 'fa-shower', class: 'btn-danger'}
+          {label: 'Upload', icon: 'fa-shower', class: 'btn-danger'}
         }
         viewButton={
           {label: 'param3', icon: 'fa-vcard', class: 'btn-danger', display: false}
