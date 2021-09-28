@@ -117,3 +117,7 @@ td{
 .btn, input[type="password"], input[type="text"]{
   border-radius: 0px !important;
 }
+
+.form-control{
+  font-weight: 500 !important;
+}

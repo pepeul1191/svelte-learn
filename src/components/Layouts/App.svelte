@@ -21,10 +21,5 @@
   </div>
 </Router>
 
-<input type="file" class="" id="btnFile" layout>
-
 <style>
-	#btnFile{
-		background: red;
-	}
 </style>
