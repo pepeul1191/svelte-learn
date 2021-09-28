@@ -19,7 +19,8 @@
   export let viewButton= {
     label: 'Ver', 
     icon: 'fa-picture-o', 
-    class: 'btn-secondary'
+    class: 'btn-secondary',
+    display: 'true',
   };
   let validationMessageClass = '';
 
@@ -79,9 +80,11 @@
   <button class="btn {uploadButton.class}" on:click="{uploadFile}">
     <i class="fa {uploadButton.icon}" aria-hidden="true"></i>{uploadButton.label} 
   </button>
+  {#if viewButton.display}
   <button class="btn {viewButton.class}" on:click="{viewFile}">
     <i class="fa {viewButton.icon}" aria-hidden="true"></i>{viewButton.label} 
   </button>
+  {/if}
 </div>
 <input type="file" class="" id="btnFile" name="file">
 <div class="col-sm-12 validation-message">

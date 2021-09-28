@@ -18,7 +18,7 @@
           {label: 'param2', icon: 'fa-shower', class: 'btn-danger'}
         }
         viewButton={
-          {label: 'param3', icon: 'fa-vcard', class: 'btn-danger'}
+          {label: 'param3', icon: 'fa-vcard', class: 'btn-danger', display: false}
         } />
       </div>
     </div>
