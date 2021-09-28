@@ -7,8 +7,12 @@
   export let label = 'Seleccionar Archivo';
   export let validationMessage = '';
   export let validationSize = {
-    size: 3, // en MB, MB = B / 1024^2 ... https://www.to-convert.com/en/computer/convert-byte-to-mb.php
+    size: 3, // MB, (MB = B / 1024^2) ... https://www.to-convert.com/en/computer/convert-byte-to-mb.php
     message: 'Archivo del tamaño supera el máximo permitido'
+  }; 
+  export let validationExtension = {
+    allowed: ['image/jpeg', 'image/png', 'image/jpg', ], 
+    message: 'Extensión del archivo no es válida'
   }; 
   export let valid = false;
   export let chooserButton= {
@@ -42,31 +46,39 @@
   const uploadFile = () => {
     var inputFile = document.querySelector('input[name="file"]').files[0];
     if((inputFile.size / Math.pow(1024,2)) < validationSize.size){
-      var formData = new FormData();
-      formData.append(`${fileName}`, inputFile);
-      axios.post(`${url}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (response) {
-        // handle success
-        console.log(response);
-        urlFile = response.data;
-        validationMessage = 'Se cargó el archivo con éxito';
-        validationMessageClass = 'text-success';
-        valid = true;
-        setTimeout(clearMessage, 5000);
-      })
-      .catch(function (error) {
-        // handle error
-        console.error(error);
-        validationMessage = 'Ocurrió un error en subir el archivo';
+      if(validationExtension.allowed.includes(inputFile.type)){
+        var formData = new FormData();
+        formData.append(`${fileName}`, inputFile);
+        axios.post(`${url}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {
+          // handle success
+          console.log(response);
+          urlFile = response.data;
+          validationMessage = 'Se cargó el archivo con éxito';
+          validationMessageClass = 'text-success';
+          valid = true;
+          setTimeout(clearMessage, 5000);
+        })
+        .catch(function (error) {
+          // handle error
+          console.error(error);
+          validationMessage = 'Ocurrió un error en subir el archivo';
+          validationMessageClass = 'text-danger';
+          valid = false;
+          setTimeout(clearMessage, 5000);
+        });
+      }else{
+        console.error(`Archivo seleccionado no es de extensión ${validationExtension.allowed}`);
+        validationMessage = validationExtension.message;
         validationMessageClass = 'text-danger';
         valid = false;
         setTimeout(clearMessage, 5000);
-      })
+      }
     }else{
-      console.error(`Archivos seleccionado pesa ${(inputFile.size / Math.pow(1024,2)).toFixed(2)} MB, el máximo es ${validationSize.size} MB`);
+      console.error(`Archivo seleccionado pesa ${(inputFile.size / Math.pow(1024,2)).toFixed(2)} MB, el máximo es ${validationSize.size} MB`);
       validationMessage = validationSize.message;
       validationMessageClass = 'text-danger';
       valid = false;

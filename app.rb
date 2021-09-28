@@ -1,4 +1,18 @@
 require 'sinatra'
+require 'json'
+require 'sequel'
+
+Sequel::Model.plugin :json_serializer
+DB = Sequel.connect('sqlite://db/data.db')
+
+class District < Sequel::Model(DB[:distritos])
+
+end
+
+class VWDistrict < Sequel::Model(DB[:vw_distritos])
+
+end
+
 
 CONSTANTS = {
   :local => {
@@ -40,7 +54,7 @@ post '/upload' do
   status = 200
   resp = ''
   file = params[:file]
-  puts file
+  # puts file
   if file[:type] == 'application/pdf'
     extension = file[:filename].split('.').last
     new_name = random_string_number(30) + '.' + extension # Helper
@@ -49,6 +63,35 @@ post '/upload' do
     resp = 'upload/' + new_name
   else
     resp = 'formato del archivo no es un PDF'
+    status = 500
+  end
+  status status
+  resp
+end
+
+get '/district/search' do
+  resp = nil
+  status = 200
+  begin
+    list = VWDistrict.where(
+        Sequel.like(:nombre, '%' + params[:name] + '%')
+      ).limit(10).to_a
+    resp = []
+    list.each do |e|
+      resp.push({
+        :id => e.id,
+        :name => e.nombre,
+      })
+    end
+    resp = resp.to_json
+  rescue Exception => e
+    resp = {
+      :tipo_mensaje => 'error',
+      :mensaje => [
+        'Se ha producido un error en buscar coincidencias en los nombres de los distritos',
+        e.message
+      ]
+    }.to_json
     status = 500
   end
   status status

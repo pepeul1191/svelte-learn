@@ -19,6 +19,12 @@
         }
         viewButton={
           {label: 'param3', icon: 'fa-vcard', class: 'btn-danger', display: false}
+        } 
+        validationSize={
+          {size: 2.6, message: 'Máximo 2 MB'}
+        }
+        validationExtension={
+          {allowed: ['application/pdf'], message: 'Sólo PDFs'}
         } />
       </div>
     </div>
