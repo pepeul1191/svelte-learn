@@ -6,11 +6,27 @@
   export let baseUrlFile = '/';
   export let label = 'Seleccionar Archivo';
   export let validationMessage = '';
+  export let chooserButton= {
+    label: 'Seleccionar', 
+    icon: 'fa-search', 
+    class: 'btn-primary'
+  };
+  export let uploadButton= {
+    label: 'Subir', 
+    icon: 'fa-upload', 
+    class: 'btn-success'
+  };
+  export let viewButton= {
+    label: 'Ver', 
+    icon: 'fa-picture-o', 
+    class: 'btn-secondary'
+  };
   let validationMessageClass = '';
 
   const clearMessage = () => {
     validationMessage = '';
     validationMessageClass = '';
+    console.log(chooserButton)
   };
 
   const selectFile = () => {
@@ -57,14 +73,14 @@
 
 <label for="file" class="{validationMessageClass != 'text-success' ? validationMessageClass : ''}">{label}</label>
 <div>
-  <button class="btn btn-primary" on:click="{selectFile}">
-    <i class="fa fa-search" aria-hidden="true"></i>Seleccionar 
+  <button class="btn {chooserButton.class}" on:click="{selectFile}">
+    <i class="fa {chooserButton.icon}" aria-hidden="true"></i>{chooserButton.label}
   </button>
-  <button class="btn btn-success" on:click="{uploadFile}">
-    <i class="fa fa-upload" aria-hidden="true"></i>Subir 
+  <button class="btn {uploadButton.class}" on:click="{uploadFile}">
+    <i class="fa {uploadButton.icon}" aria-hidden="true"></i>{uploadButton.label} 
   </button>
-  <button class="btn btn-secondary" on:click="{viewFile}">
-    <i class="fa fa-picture-o" aria-hidden="true"></i>Ver 
+  <button class="btn {viewButton.class}" on:click="{viewFile}">
+    <i class="fa {viewButton.icon}" aria-hidden="true"></i>{viewButton.label} 
   </button>
 </div>
 <input type="file" class="" id="btnFile" name="file">
