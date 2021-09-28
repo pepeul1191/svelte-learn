@@ -17,7 +17,7 @@
   <span class="extraData"></span>
   <!--EMAIL -->
   <label for="email" class="sr-only">email</label>
-  <input type="text" id="email" class="form-control" placeholder="Correo" required="" autofocus="" name="email">
+  <input type="text" id="email" class="form-control" placeholder="Correo" required="" name="email">
   <!--CSRF -->
 
   <!--MESSAGE-->

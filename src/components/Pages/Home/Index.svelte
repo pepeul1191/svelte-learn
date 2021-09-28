@@ -1,4 +1,5 @@
 <script>
+	import Autocomplete from './../../Widgets/Autocomplete.svelte';
 	import UploadFile from './../../Widgets/UploadFile.svelte';
 </script>
 
@@ -31,6 +32,20 @@
     <div class="col-md-4">
       <div class="form-group">
         <UploadFile />
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <Autocomplete 
+          label={'Buscar Distritos'} 
+          placeholder={'Ingrese distrito'} 
+          url={`${BASE_URL}district/search`} 
+          key={'name'} />
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <Autocomplete />
       </div>
     </div>
   </div>
