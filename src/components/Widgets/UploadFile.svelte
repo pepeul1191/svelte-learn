@@ -5,7 +5,6 @@
   export let fileName = 'file';
   export let baseUrlFile = '/';
   export let label = 'Seleccionar Archivo';
-  export let validationMessage = '';
   export let validationSize = {
     size: 3, // MB, (MB = B / 1024^2) ... https://www.to-convert.com/en/computer/convert-byte-to-mb.php
     message: 'Archivo del tamaño supera el máximo permitido'
@@ -31,6 +30,7 @@
     class: 'btn-secondary',
     display: 'true',
   };
+  export let validationMessage = '';
   let validationMessageClass = '';
 
   const clearMessage = () => {
@@ -126,9 +126,5 @@
 
   div .btn:not(:first-child) {
     margin-left: 10px;
-  }
-
-  .validation-message {
-    padding-left:0px;
   }
 </style>

@@ -118,3 +118,5 @@ Fuentes:
 + https://lokalise.com/blog/svelte-i18n/
 + https://svelte.dev/repl/803c5f09233349d18365ed5583faaf0e?version=3.9.2
 + https://github.com/EmilTholin/svelte-routing/blob/master/CHANGELOG.md#140
++ https://stackoverflow.com/questions/61598941/how-to-scope-queryselector-to-component-in-svelte
++ https://github.com/sveltejs/svelte/issues/3461

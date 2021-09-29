@@ -121,3 +121,7 @@ td{
 .form-control{
   font-weight: 500 !important;
 }
+
+.validation-message {
+  padding-left:0px !important;
+}
