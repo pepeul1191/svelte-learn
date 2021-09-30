@@ -2,10 +2,10 @@
   import { onMount, createEventDispatcher } from 'svelte';
 	import Autocomplete from './../../Widgets/Autocomplete.svelte';
 	import UploadFile from './../../Widgets/UploadFile.svelte';
+  import Calendar from './../../Widgets/Calendar.svelte';
   import Bar from './../../Modals/Bar.svelte';
   import { modal } from '../../Stores/modal.js';
   const dispatch = createEventDispatcher();
-  let modalDOMStore;
 
   onMount(() => {
     console.log('index');
@@ -70,6 +70,9 @@
       <div class="form-group">
         <button class="btn btn-info" on:click="{showModal}">Modal BAR</button>
       </div>
+    </div>
+    <div class="col-md-3">
+      <Calendar />
     </div>
   </div>
 </div>

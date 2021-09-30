@@ -20,6 +20,9 @@
       modalComponent = value;
     });
     modalDOMStore = new Modal(document.getElementById('modal'));
+    document.getElementById('modal').addEventListener('hidden.bs.modal', function (event) {
+      alert('=P');
+    })
   });
 
   const modalOpen = () => {
@@ -30,7 +33,7 @@
   };
 
   function showModal(event) {
-    if(event !== undefined){
+    if(typeof(event) !== "undefined" && event !== null){
       console.log(event.detail.param1);
     }
 		modalDOMStore.show();
