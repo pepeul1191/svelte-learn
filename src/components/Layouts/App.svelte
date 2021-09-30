@@ -7,7 +7,7 @@
 	import { Router, Route } from 'svelte-routing';
   import Index from '../Pages/Home/Index.svelte';
 	import Redirect404 from '../Pages/Error/Redirect404.svelte';
-  import { modal, modalDOM } from '../Stores/modal.js';
+  import { modal } from '../Stores/modal.js';
   import Foo from '../Modals/Foo.svelte';
   export let url = '';
   export let basepath = '/';
@@ -19,16 +19,22 @@
     modal.subscribe(value => {
       modalComponent = value;
     });
-    modalDOM.subscribe(value => {
-      modalDOMStore = new Modal(document.getElementById('modal'));
-    });
+    modalDOMStore = new Modal(document.getElementById('modal'));
   });
 
   const modalOpen = () => {
     //myModal.toggle()
     modalComponent = Foo;
-    modalDOMStore.show();
+    // modalDOMStore.show();
+    showModal(null);
   };
+
+  function showModal(event) {
+    if(event !== undefined){
+      console.log(event.detail.param1);
+    }
+		modalDOMStore.show();
+	}
 
 </script>
 
@@ -45,7 +51,7 @@
 
 <Router url="{url}" basepath="{basepath}">
   <div>
-    <Route path="/" component="{Index}" />
+    <Route path="/"><Index on:showModal={showModal}/></Route>
     <Route path="/*" component="{Redirect404}" />
   </div>
 </Router>

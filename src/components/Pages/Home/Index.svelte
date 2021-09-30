@@ -1,18 +1,21 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
 	import Autocomplete from './../../Widgets/Autocomplete.svelte';
 	import UploadFile from './../../Widgets/UploadFile.svelte';
   import Bar from './../../Modals/Bar.svelte';
-  import { modal, modalDOM } from '../../Stores/modal.js';
+  import { modal } from '../../Stores/modal.js';
+  const dispatch = createEventDispatcher();
   let modalDOMStore;
 
   onMount(() => {
     console.log('index');
   });
 
-  const modalOpen = () => {
+  const showModal = () => {
     modal.set(Bar);
-    console.log(modalDOM);
+    dispatch('showModal', {
+			param1: 'Hello!'
+		});
   };
 </script>
 
@@ -65,7 +68,7 @@
     </div>
     <div class="col-md-3">
       <div class="form-group">
-        <button class="btn btn-info" on:click="{modalOpen}">Modal BAR</button>
+        <button class="btn btn-info" on:click="{showModal}">Modal BAR</button>
       </div>
     </div>
   </div>

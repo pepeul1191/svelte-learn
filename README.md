@@ -120,3 +120,6 @@ Fuentes:
 + https://github.com/EmilTholin/svelte-routing/blob/master/CHANGELOG.md#140
 + https://stackoverflow.com/questions/61598941/how-to-scope-queryselector-to-component-in-svelte
 + https://github.com/sveltejs/svelte/issues/3461
++ https://svelte.dev/tutorial/component-events
++ https://svelte.dev/tutorial/writable-stores
++ https://www.youtube.com/watch?v=j5BSmW9SkM8&t=30s
