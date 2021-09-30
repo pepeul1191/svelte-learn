@@ -73,7 +73,7 @@
   };
 
   const focusout = (event) => {
-    
+    console.log(event)
   };
 
   const hintHover = (event) => {

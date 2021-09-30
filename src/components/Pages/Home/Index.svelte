@@ -1,6 +1,19 @@
 <script>
+  import { onMount } from 'svelte';
 	import Autocomplete from './../../Widgets/Autocomplete.svelte';
 	import UploadFile from './../../Widgets/UploadFile.svelte';
+  import Bar from './../../Modals/Bar.svelte';
+  import { modal, modalDOM } from '../../Stores/modal.js';
+  let modalDOMStore;
+
+  onMount(() => {
+    console.log('index');
+  });
+
+  const modalOpen = () => {
+    modal.set(Bar);
+    console.log(modalDOM);
+  };
 </script>
 
 <div class="container">
@@ -41,15 +54,18 @@
         <Autocomplete 
           label={'Buscar Distritos'} 
           placeholder={'Ingrese distrito'} 
-          url={`${BASE_URL}district/search`} 
-          key={'name'} />
+          url={`${BASE_URL}district/search`} />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
         <Autocomplete 
-          url={`${BASE_URL}district/search`} 
-          key={'name'} />
+          url={`${BASE_URL}district/search`} />
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <button class="btn btn-info" on:click="{modalOpen}">Modal BAR</button>
       </div>
     </div>
   </div>
