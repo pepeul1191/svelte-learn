@@ -1,23 +1,32 @@
 <script>
   import { onMount, tick } from 'svelte';
-  export const date = new Date();
-  export const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Deciembre'];
+  export const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   export const days = ['Lun','Mar','Mie','Jue','Vie','Sab','Dom'];
   let calendarDays = [];
+  export let date;
   let labelMonth;
+  let month;
+  let year;
+  let actualDay;
 
   onMount(async () => {
-    var month = date.getMonth();
-    var year = date.getFullYear();
-    date.setDate(1); // go to first day of month
-   
-    calendarDays = await fillCalendarDays(date, month, year);
-    labelMonth = `${months[date.getMonth() - 1]} ${year}`;
+    date = new Date();
+    actualDay = date.getDay();
+    calendarDays = await fillCalendarDays();
+    updateLabelMonthYear();
   });
 
-  const fillCalendarDays = (date, month, year) => {
+  const updateLabelMonthYear = () => {
+    labelMonth = `${months[date.getMonth()]} ${date.getFullYear()}`;
+  };
+
+  const fillCalendarDays = () => {
     var resp = [];
-    var i = 0;
+    var first = true;
+    var baseDate = date;
+    month = date.getMonth();
+    year = date.getFullYear();
+    date.setDate(1); // go to first day of month
     while(date.getMonth() === month){
       //var t = `${date.getDay()} - ${month} - ${year}`;
       var num = date.getDay();
@@ -40,38 +49,47 @@
       }
       // sytles
       tmp['margin'] = ''; 
-      //console.log('1 +++++++++++++++++++++++++++++++')
-      //console.log('num ' + num)
-      //console.log('day ' + day)
-      //console.log('2 +++++++++++++++++++++++++++++++')
-      if (i == 0) {
-        //console.log('IF +++++++++++++++++++++++++++++++')
-        if (day === 0) {
+      if (first) {
+        console.log('object')
+        if (num == 0) {
           tmp['margin'] = (6 * 14.28) + "%";
         } else {
           tmp['margin'] = ((num - 1) * 14.28) + "%";
         }
-        //console.log(tmp)
       }
-      i++;
+      first = false;
       resp.push(tmp);
       // next day
       date.setDate(date.getDate() + 1);
     }
-    console.log(resp)
+    date = baseDate;
+    //console.log(resp)
+    date.setMonth(date.getMonth()-1);
     return resp;
+  };
+
+  const nextMonth = () => {
+    date.setMonth(date.getMonth() + 1);
+    calendarDays = fillCalendarDays();
+    updateLabelMonthYear();
+  };
+
+  const prevMonth = () => {
+    date.setMonth(date.getMonth() - 1);
+    calendarDays = fillCalendarDays();
+    updateLabelMonthYear();
   };
 </script>
 
 <div id="calendarioDemo" class="v-cal">
   <div class="vcal-header">
-    <button class="vcal-btn" data-calendar-toggle="previous" id="btnAtras">
+    <button class="vcal-btn" data-calendar-toggle="previous" on:click="{prevMonth}">
       <i class="fa fa-chevron-left" aria-hidden="true"></i>
     </button>
-    <div class="vcal-header__label" data-calendar-label="month" id="lblMes">
+    <div class="vcal-header__label" data-calendar-label="month">
       {labelMonth}
     </div>
-    <button class="vcal-btn" data-calendar-toggle="next" id="btnAdelante">
+    <button class="vcal-btn" data-calendar-toggle="next" on:click="{nextMonth}">
       <i class="fa fa-chevron-right" aria-hidden="true"></i>
     </button>
   </div>
@@ -80,7 +98,7 @@
       <span>{day}</span>
     {/each}
   </div>
-  <div class="vcal-body" data-calendar-area="month" id="bodyCadelndario">
+  <div class="vcal-body" data-calendar-area="month">
     {#each calendarDays as day}
       <div class="vcal-date vcal-date--active" style="margin-left:{day['margin']};" date="{day['date']}">
         <span>{day['day']}</span>
@@ -91,7 +109,7 @@
 <br>
 <p class="demo-picked">
   Date picked:
-  <span data-calendar-label="picked" id="targetSeleccion"></span>
+  <span data-calendar-label="picked"></span>
 </p>
 
 <style>
