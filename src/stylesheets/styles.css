@@ -125,3 +125,7 @@ td{
 .validation-message {
   padding-left:0px !important;
 }
+
+.v-active{
+  background: #ccc !important;
+}

@@ -25,6 +25,7 @@
     "query-string": "^7.0.1",
     "rollup-plugin-copy": "^3.4.0",
     "sirv-cli": "^1.0.0",
-    "svelte-routing": "^1.6.0"
+    "svelte-routing": "^1.6.0",
+    "vue": "^3.2.19"
   }
 }

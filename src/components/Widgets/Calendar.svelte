@@ -4,6 +4,7 @@
   export const days = ['Lun','Mar','Mie','Jue','Vie','Sab','Dom'];
   let calendarDays = [];
   export let date;
+  export let selectedDays = [];
   let labelMonth;
   let month;
   let year;
@@ -35,13 +36,13 @@
       tmp['day'] = day;
       // date format
       if(day < 10){  
-        if(month < 10){
+        if(month < 9){
           tmp['date'] = year + '-0' + (month + 1) + '-0' + day;
         }else{
           tmp['date'] = year + '-' + (month + 1) + '-0' + day;
         }
       }else{  
-        if(month < 10){
+        if(month < 9){
           tmp['date'] = year + '-0' + (month + 1) + '-' + day;
         }else{
           tmp['date'] = year + '-' + (month + 1) + '-' + day;
@@ -50,7 +51,6 @@
       // sytles
       tmp['margin'] = ''; 
       if (first) {
-        console.log('object')
         if (num == 0) {
           tmp['margin'] = (6 * 14.28) + "%";
         } else {
@@ -58,26 +58,56 @@
         }
       }
       first = false;
+      // check if selected
+      if(selectedDays.includes(tmp['date'])){
+        tmp['wasActive'] = true;
+      }else{
+        tmp['wasActive'] = false;
+      }
       resp.push(tmp);
       // next day
       date.setDate(date.getDate() + 1);
     }
     date = baseDate;
-    //console.log(resp)
+    console.log(resp)
     date.setMonth(date.getMonth()-1);
     return resp;
   };
 
-  const nextMonth = () => {
+  const nextMonth = async () => {
     date.setMonth(date.getMonth() + 1);
-    calendarDays = fillCalendarDays();
+    calendarDays = await fillCalendarDays();
+    //checkDaysSelected();
     updateLabelMonthYear();
   };
 
-  const prevMonth = () => {
+  const prevMonth = async () => {
     date.setMonth(date.getMonth() - 1);
-    calendarDays = fillCalendarDays();
+    calendarDays = await fillCalendarDays();
+    //checkDaysSelected();
     updateLabelMonthYear();
+  };
+
+  const clickDay = async (event) => {
+    var clickedDay = null;
+    var targetDiv = null;
+    if(event.target.tagName == 'SPAN'){
+      targetDiv = event.target.parentNode;
+    }else if(event.target.tagName == 'DIV'){
+      targetDiv = event.target;
+    }
+    clickedDay = targetDiv.getAttribute('date');
+    if(selectedDays.includes(clickedDay)){
+      var index = selectedDays.indexOf(clickedDay);
+      if (index !== -1) {
+        selectedDays.splice(index, 1);
+      }
+    }else{
+      selectedDays.push(clickedDay);
+    }
+    calendarDays = await fillCalendarDays();
+    console.log(selectedDays)
+    //targetDiv.classList.toggle('v-active');
   };
 </script>
 
@@ -98,9 +128,9 @@
       <span>{day}</span>
     {/each}
   </div>
-  <div class="vcal-body" data-calendar-area="month">
+  <div class="vcal-body" data-calendar-area="month" id="bodyCalendar">
     {#each calendarDays as day}
-      <div class="vcal-date vcal-date--active" style="margin-left:{day['margin']};" date="{day['date']}">
+      <div class="{(day['wasActive'] == true) ? 'vcal-date vcal-date--active v-active b' : 'vcal-date vcal-date--active a'}" style="margin-left:{day['margin']};" date="{day['date']}" on:click="{clickDay}">
         <span>{day['day']}</span>
       </div>
     {/each}
@@ -128,7 +158,6 @@
   }
 
   .v-cal {
-    background-color: var(--vcal-bg-color);
     border-radius: var(--vcal-border-radius);
     border: solid 1px var(--vcal-border-color);
     box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.05);
@@ -164,10 +193,6 @@
     align-items: center;
     display: flex;
     padding: 1.2rem 1.4rem;
-  }
-
-  .v-cal .vcal-header svg {
-    fill: var(--vcal-today-bg-color);
   }
 
   .v-cal .vcal-header__label {
