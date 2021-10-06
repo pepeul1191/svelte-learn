@@ -1,10 +1,12 @@
 <script>
+	import DemoForm from './../../Forms/DemoForm.svelte';
   import { onMount, createEventDispatcher } from 'svelte';
 	import Autocomplete from './../../Widgets/Autocomplete.svelte';
 	import UploadFile from './../../Widgets/UploadFile.svelte';
   import Calendar from './../../Widgets/Calendar.svelte';
   import Bar from './../../Modals/Bar.svelte';
   import { modal } from '../../Stores/modal.js';
+  import DataTable from '../../Widgets/DataTable.svelte';
   const dispatch = createEventDispatcher();
 
   onMount(() => {
@@ -73,6 +75,13 @@
     </div>
     <div class="col-md-3">
       <Calendar />
+    </div>
+    <DemoForm />
+    <div class="col-md-12">
+      <DataTable 
+        labelHeaders={['codigo', 'nombre']}
+        data={[{code: '20051191', name:'Pepe'},{code: '20151191', name:'Sila'}]}
+      />
     </div>
   </div>
 </div>

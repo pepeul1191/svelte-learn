@@ -12,6 +12,7 @@
   export let hintKey = 'id'; // from client
   export let hintValue = 'name'; // from client
   export let validationMessage = '';
+  export let valid = false;
   let validationMessageClass = '';
   let hints = [];
   let displayHints = false;
@@ -68,6 +69,7 @@
     // console.log(hintKeyP)
     valueId = hintKeyP;
     value = hintValueP;
+    valid = true;
     hints = [];
     displayHints = false;
   };
@@ -126,6 +128,7 @@
         var li = ul.childNodes[childHintActive];
         value = li.innerHTML;
         valueId = li.getAttribute('hint-id');
+        valid = true;
         hints = [];
         displayHints = false;
         break;

@@ -9,6 +9,10 @@ class District < Sequel::Model(DB[:distritos])
 
 end
 
+class Deparment < Sequel::Model(DB[:departamentos])
+
+end
+
 class VWDistrict < Sequel::Model(DB[:vw_distritos])
 
 end
@@ -89,6 +93,35 @@ get '/district/search' do
       :tipo_mensaje => 'error',
       :mensaje => [
         'Se ha producido un error en buscar coincidencias en los nombres de los distritos',
+        e.message
+      ]
+    }.to_json
+    status = 500
+  end
+  status status
+  resp
+end
+
+get '/department/search' do
+  resp = nil
+  status = 200
+  begin
+    list = Deparment.where(
+        Sequel.like(:nombre, '%' + params[:name] + '%')
+      ).limit(10).to_a
+    resp = []
+    list.each do |e|
+      resp.push({
+        :id => e.id,
+        :name => e.nombre,
+      })
+    end
+    resp = resp.to_json
+  rescue Exception => e
+    resp = {
+      :tipo_mensaje => 'error',
+      :mensaje => [
+        'Se ha producido un error en buscar coincidencias en los nombres de los departamentos',
         e.message
       ]
     }.to_json

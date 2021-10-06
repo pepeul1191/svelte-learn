@@ -69,12 +69,12 @@
       date.setDate(date.getDate() + 1);
     }
     date = baseDate;
-    console.log(resp)
+    // console.log(resp)
     date.setMonth(date.getMonth()-1);
     return resp;
   };
 
-  const nextMonth = async () => {
+  const nextMonth = async () => {   
     date.setMonth(date.getMonth() + 1);
     calendarDays = await fillCalendarDays();
     //checkDaysSelected();
@@ -106,8 +106,7 @@
       selectedDays.push(clickedDay);
     }
     calendarDays = await fillCalendarDays();
-    console.log(selectedDays)
-    //targetDiv.classList.toggle('v-active');
+    // console.log(selectedDays)
   };
 </script>
 
