@@ -1,3 +1,4 @@
+<svelte:options accessors={true} />
 <script>
   import { onMount } from 'svelte';
   import random from '../Helpers/random.js';
@@ -15,7 +16,7 @@
     console.log(randId)
   });
 
-   const validate = async () => {
+  export const validate = async () => {
     validations.forEach(validation => {
       if(validation.type == 'notEmpty'){
         // console.log('notEmpty')

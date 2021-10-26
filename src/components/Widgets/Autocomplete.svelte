@@ -13,6 +13,7 @@
   export let hintValue = 'name'; // from client
   export let validationMessage = '';
   export let valid = false;
+  export let notEmptyMessage = 'Debe de seleccionar un elemento';
   let validationMessageClass = '';
   let hints = [];
   let displayHints = false;
@@ -136,10 +137,20 @@
         break;
     }
   }
+
+  export const validate = () =>{
+    console.log('XD')
+    if(valid == false){
+      validationMessage = notEmptyMessage;
+      validationMessageClass = 'text-danger';
+    }else{
+      validationMessage = '';
+    }
+  };
 </script>
 <div bind:this={root}>
   <label for="file" class="{(validationMessageClass != 'text-warning') ? validationMessageClass : ''}">{label}</label>
-  <input type="text" class="form-control" placeholder="{placeholder}" bind:value={value} on:keydown={keyDown} on:input="{search}" on:blur="{focusout}">
+  <input type="text" class="form-control {(validationMessageClass == 'text-danger') ? 'is-invalid' : ''}" placeholder="{placeholder}" bind:value={value} on:keydown={keyDown} on:input="{search}" on:blur="{focusout}">
   <ul class="hint-container {displayHints ? '' : 'd-none'}">
     {#each hints as hint}
       <li hint-id="{hint[hintKey]}" on:click={hintClick(hint[hintKey], hint[hintValue])} on:mousemove={hintHover}>{hint.name}</li>

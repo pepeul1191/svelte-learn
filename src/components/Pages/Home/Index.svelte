@@ -59,13 +59,15 @@
         <Autocomplete 
           label={'Buscar Distritos'} 
           placeholder={'Ingrese distrito'} 
-          url={`${BASE_URL}district/search`} />
+          url={`${BASE_URL}district/search`} 
+        />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
         <Autocomplete 
-          url={`${BASE_URL}district/search`} />
+          url={`${BASE_URL}district/search`} 
+        />
       </div>
     </div>
     <div class="col-md-3">
