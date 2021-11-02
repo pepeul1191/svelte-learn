@@ -130,3 +130,22 @@ get '/department/search' do
   status status
   resp
 end
+
+get '/department/list' do
+  resp = nil
+  status = 200
+  begin
+    resp = Deparment.all().to_a.to_json
+  rescue Exception => e
+    resp = {
+      :tipo_mensaje => 'error',
+      :mensaje => [
+        'Se ha producido un error en listar los departamentos',
+        e.message
+      ]
+    }.to_json
+    status = 500
+  end
+  status status
+  resp
+end

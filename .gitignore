@@ -6,3 +6,4 @@ package-lock.json
 /public/vendor
 /public/fonts
 /public/upload
+Gemfile.lock

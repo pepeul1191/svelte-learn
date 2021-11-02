@@ -7,6 +7,7 @@
   import Bar from './../../Modals/Bar.svelte';
   import { modal } from '../../Stores/modal.js';
   import DataTable from '../../Widgets/DataTable.svelte';
+  
   const dispatch = createEventDispatcher();
 
   onMount(() => {
@@ -81,7 +82,30 @@
     <DemoForm />
     <div class="col-md-12">
       <DataTable 
-        labelHeaders={['codigo', 'nombre']}
+        urlServices={{ 
+          list: `${BASE_URL}department/list`, 
+          save: `${BASE_URL}department/save` }}
+        rows={{
+          id: {
+            style: 'color: red; display:none;',
+          },
+          nombre:{
+            
+          }}}
+        headers={[
+          {
+            caption: 'codigo',
+            style: 'display:none',
+            type: 'td'
+          },
+          {
+            caption: 'Nombre de Departamento',
+            type: 'td'
+          },
+          {
+            caption: 'Operaciones',
+            type: 'actions'
+          },]}
         data={[{code: '20051191', name:'Pepe'},{code: '20151191', name:'Sila'}]}
       />
     </div>
