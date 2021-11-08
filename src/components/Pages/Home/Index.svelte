@@ -85,26 +85,29 @@
         urlServices={{ 
           list: `${BASE_URL}department/list`, 
           save: `${BASE_URL}department/save` }}
+        buttonAddRow={true},
         rows={{
           id: {
-            style: 'color: red; display:none;',
+            style: 'color: red;',
+            type: 'td',
           },
           nombre:{
-            
-          }}}
+            type: 'input[text]',
+          },
+          actions:{
+            type: 'actions',
+          }
+        }}
         headers={[
           {
             caption: 'codigo',
             style: 'display:none',
-            type: 'td'
           },
           {
             caption: 'Nombre de Departamento',
-            type: 'td'
           },
           {
             caption: 'Operaciones',
-            type: 'actions'
           },]}
         data={[{code: '20051191', name:'Pepe'},{code: '20151191', name:'Sila'}]}
       />
