@@ -89,7 +89,7 @@
         rows={{
           id: {
             style: 'color: red;',
-            type: 'td',
+            type: 'id',
           },
           nombre:{
             type: 'input[text]',

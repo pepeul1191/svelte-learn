@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import axios from 'axios';
+  import random from '../Helpers/random.js';
   export let headers;
   export let data = [];
   export let urlServices;
@@ -58,8 +59,24 @@
   };
 
   const addRow = () => {
-    data.push({id: 123, nombre: '-'})
-    console.log(data)
+    var tmp = {};
+    for(var key of Object.keys(rows)){
+      switch (rows[key].type) {
+        case 'id':
+          tmp[key] = `tmp_${random(10)}`;
+          break;
+        case 'input[text]':
+          tmp[key] = '';
+          break;
+        case 'actions':
+          tmp[key] = undefined;
+          break;
+        default:
+          break;
+      }
+    }
+    data.push(tmp)
+    data = data // for bind update
   }
 </script>
   
@@ -75,7 +92,7 @@
       {#each Object.entries(rows) as [id, rowProps]}
       <td style="{rowProps.style}">
       {#if rowProps.type != 'actions'}
-        {#if rowProps.type == 'td'}
+        {#if rowProps.type == 'id'}
           <span key="{id}">{record[id]}</span>
         {:else if rowProps.type == 'input[text]'}
           <input type="text" key="{id}" on:keydown={inputTextKeyDown} bind:value={record[id]}>
