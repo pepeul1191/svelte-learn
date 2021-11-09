@@ -1,12 +1,14 @@
 <script>
   import { onMount } from 'svelte';
   import axios from 'axios';
+  import { navigate } from 'svelte-routing';
   import random from '../Helpers/random.js';
   export let headers;
   export let data = [];
   export let urlServices;
   export let rows;
   export let buttonAddRow = false;
+  export let buttonAddRecord = false;
   let observer = { new: [], edit: [{id: 2, name:'XD 2'}, {id: 1, name:'XD 1'}], delete: []};
 
   onMount(() => {
@@ -80,7 +82,7 @@
   }
 </script>
   
-<table class="table table-striped"> 
+<table class="table table-striped">
   <thead>
     {#each headers as headerProps}
     <th style="{headerProps.style}">{headerProps.caption}</th>
@@ -108,8 +110,11 @@
   <tfoot>
     <tr>
       <td colspan="1000" style="text-align:right">
-        {#if buttonAddRow}
+        {#if buttonAddRow != false}
         <button class="btn btn-primary" on:click={addRow}> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</button>
+        {/if}
+        {#if buttonAddRecord != false}
+        <a class="btn btn-primary" on:click|preventDefault={() => {navigate(buttonAddRecord)}} href="{buttonAddRecord}"> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</a>
         {/if}
       </td>
     </tr>
@@ -197,7 +202,11 @@ table tbody tr td i:hover, td > a > i:hover{
 }
 
 tfoot tr td button, tfoot tr td a{
-  margin-left: 10px
+  margin-left: 10px;
+}
+
+.btn > i {
+  color: white;
 }
 
 table > tfoot > tr > td {

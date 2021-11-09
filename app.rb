@@ -49,9 +49,11 @@ end
   end
 end
 
-get '/' do
-  locals = {}
-  erb :'home', :locals => locals
+['/', '/department/add'].each do |path|
+  get path do
+    locals = {}
+    erb :'home', :locals => locals
+  end
 end
 
 post '/upload' do

@@ -86,6 +86,7 @@
           list: `${BASE_URL}department/list`, 
           save: `${BASE_URL}department/save` }}
         buttonAddRow={true},
+        buttonAddRecord={'/department/add'}
         rows={{
           id: {
             style: 'color: red;',
@@ -109,7 +110,6 @@
           {
             caption: 'Operaciones',
           },]}
-        data={[{code: '20051191', name:'Pepe'},{code: '20151191', name:'Sila'}]}
       />
     </div>
   </div>

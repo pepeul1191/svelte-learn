@@ -9,6 +9,7 @@
 	import Redirect404 from '../Pages/Error/Redirect404.svelte';
   import { modal } from '../Stores/modal.js';
   import Foo from '../Modals/Foo.svelte';
+  import Department from '../Pages/Home/Department.svelte';
   export let url = '';
   export let basepath = '/';
   let modalComponent;
@@ -55,6 +56,7 @@
 <Router url="{url}" basepath="{basepath}">
   <div>
     <Route path="/"><Index on:showModal={showModal}/></Route>
+    <Route path="/department/add" component="{Department}" />
     <Route path="/*" component="{Redirect404}" />
   </div>
 </Router>
