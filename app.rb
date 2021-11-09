@@ -9,7 +9,7 @@ class District < Sequel::Model(DB[:distritos])
 
 end
 
-class Deparment < Sequel::Model(DB[:departamentos])
+class Department < Sequel::Model(DB[:departamentos])
 
 end
 
@@ -104,11 +104,71 @@ get '/district/search' do
   resp
 end
 
+post '/department/save' do
+  resp = nil
+  status = 200
+  payload = JSON.parse(request.body.read)
+  news = payload['news']
+  edits = payload['edits']
+  deletes = payload['deletes']
+  resp = []
+  array_news = []
+  error = false
+  execption = nil
+  DB.transaction do
+    begin
+      if news.length != 0
+        news.each do |n|
+          tmp = Department.new(
+            :nombre => n['nombre']
+          )
+          tmp.save
+          t = {
+            :tmp => n['id'],
+            :new_id => tmp.id
+          }
+          array_news.push(t)
+        end
+      end
+      if edits.length != 0
+        edits.each do |e|
+          tmp = Department.where(
+            :id => e['id']
+          ).first
+          tmp.nombre = e['nombre']
+          tmp.save
+        end
+      end
+      if deletes.length != 0
+        deletes.each do |d|
+          Department.where(
+            :id => d
+        ).delete
+        end
+      end
+    rescue Exception => e
+      Sequel::Rollback
+      error = true
+      execption = e
+    end
+  end
+  if error == false
+    resp = ['Se ha registrado los cambios en los departamentos',array_news].to_json
+  else
+    status = 500
+    resp = [
+      'Se ha producido un error en guardar la tabla de departamentos',
+      execption.message].to_json
+  end
+  status status
+  resp
+end
+
 get '/department/search' do
   resp = nil
   status = 200
   begin
-    list = Deparment.where(
+    list = Department.where(
         Sequel.like(:nombre, '%' + params[:name] + '%')
       ).limit(10).to_a
     resp = []
@@ -137,7 +197,7 @@ get '/department/list' do
   resp = nil
   status = 200
   begin
-    resp = Deparment.all().to_a.to_json
+    resp = Department.all().to_a.to_json
   rescue Exception => e
     resp = {
       :tipo_mensaje => 'error',

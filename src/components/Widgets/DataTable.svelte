@@ -41,7 +41,7 @@
     .then(function () {});
   };
 
-  function search(key, idSearched, observerArray){
+  function observerSearch(key, idSearched, observerArray){
     for (var i=0; i < observerArray.length; i++) {
       if (observerArray[i][key] == idSearched) {
         return observerArray[i];
@@ -50,15 +50,23 @@
     return false;
   }
 
+  function dataSearch(key, idSearched){
+    for (var i=0; i < data.length; i++) {
+      if (data[i][key] == idSearched) {
+        return data[i];
+      }
+    }
+  }
+
   const inputTextKeyDown = (event) => {
     var idKey = event.target.parentElement.parentElement.firstChild.firstChild.getAttribute('key');
     var rowKey = event.target.parentElement.parentElement.firstChild.firstChild.innerHTML;
     if(String(rowKey).includes('tmp')){
-      if(search(idKey, rowKey, observer.new) == false){
+      if(observerSearch(idKey, rowKey, observer.new) == false){
         observer.new.push({[idKey]: rowKey})
       }
     }else{
-      if(search(idKey, rowKey, observer.edit) == false){
+      if(observerSearch(idKey, rowKey, observer.edit) == false){
         observer.edit.push({[idKey]: rowKey})
       }
     }
@@ -86,7 +94,37 @@
   }
 
   const save = () => {
-    alert('s')
+    var dataToSend = {new:[], edit:[], delete:[]};
+    observer.new.forEach(newed => {
+      var key = Object.keys(newed)[0];
+      var value = newed[key];
+      var record = dataSearch(key, value);
+      delete record['actions'];
+      dataToSend.new.push(record);
+    });
+    observer.edit.forEach(edited => {
+      var key = Object.keys(edited)[0];
+      var value = edited[key];
+      var record = dataSearch(key, value);
+      delete record['actions'];
+      dataToSend.edit.push(record);
+    });
+    for(var x in observer.delete){
+      console.log(x)
+    }
+    axios.post(urlServices.save, JSON.stringify({
+      news: dataToSend.new,
+      edits: dataToSend.edit,
+      deletes: dataToSend.delete
+    }), {headers: {
+      'Content-Type': 'application/json',
+    }})
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 </script>
   
