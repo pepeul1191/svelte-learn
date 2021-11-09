@@ -93,7 +93,7 @@
             style: 'color: red;',
             type: 'id',
           },
-          nombre:{
+          name:{
             type: 'input[text]',
           },
           actions:{

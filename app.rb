@@ -5,15 +5,15 @@ require 'sequel'
 Sequel::Model.plugin :json_serializer
 DB = Sequel.connect('sqlite://db/data.db')
 
-class District < Sequel::Model(DB[:distritos])
+class District < Sequel::Model(DB[:districts])
 
 end
 
-class Department < Sequel::Model(DB[:departamentos])
+class Department < Sequel::Model(DB[:departments])
 
 end
 
-class VWDistrict < Sequel::Model(DB[:vw_distritos])
+class VWDistrict < Sequel::Model(DB[:vw_districts])
 
 end
 
@@ -80,13 +80,13 @@ get '/district/search' do
   status = 200
   begin
     list = VWDistrict.where(
-        Sequel.like(:nombre, '%' + params[:name] + '%')
+        Sequel.like(:name, '%' + params[:name] + '%')
       ).limit(10).to_a
     resp = []
     list.each do |e|
       resp.push({
         :id => e.id,
-        :name => e.nombre,
+        :name => e.name,
       })
     end
     resp = resp.to_json
@@ -120,7 +120,7 @@ post '/department/save' do
       if news.length != 0
         news.each do |n|
           tmp = Department.new(
-            :nombre => n['nombre']
+            :name => n['name']
           )
           tmp.save
           t = {
@@ -135,7 +135,7 @@ post '/department/save' do
           tmp = Department.where(
             :id => e['id']
           ).first
-          tmp.nombre = e['nombre']
+          tmp.name = e['name']
           tmp.save
         end
       end
@@ -169,13 +169,13 @@ get '/department/search' do
   status = 200
   begin
     list = Department.where(
-        Sequel.like(:nombre, '%' + params[:name] + '%')
+        Sequel.like(:name, '%' + params[:name] + '%')
       ).limit(10).to_a
     resp = []
     list.each do |e|
       resp.push({
         :id => e.id,
-        :name => e.nombre,
+        :name => e.name,
       })
     end
     resp = resp.to_json
