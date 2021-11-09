@@ -94,6 +94,7 @@
   }
 
   const deleteRow = (event) => {
+    // observers
     var idKey = event.target.parentElement.parentElement.firstChild.firstChild.getAttribute('key');
     var rowKey = event.target.parentElement.parentElement.firstChild.firstChild.innerHTML;
     if(observerSearch(idKey, rowKey, observer.new) != false){
@@ -110,6 +111,14 @@
     if(observerSearch(idKey, rowKey, observer.delete) == false){
       observer.delete.push({[idKey]: rowKey});
     }
+    // delete from data
+    var tmp = [];
+    data.forEach(record => {
+      if(record[idKey] != rowKey){
+        tmp.push(record);
+      }
+    });
+    data = tmp;
   }
 
   const save = () => {
@@ -135,9 +144,7 @@
       var key = Object.keys(deleted)[0];
       recordId = key;
       var value = deleted[key];
-      var record = dataSearch(key, value);
-      delete record['actions'];
-      dataToSend.delete.push(record);
+      dataToSend.delete.push({[key]: value});
     });
     axios.post(urlServices.save, JSON.stringify({
       news: dataToSend.new,
