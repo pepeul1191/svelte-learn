@@ -125,7 +125,7 @@ post '/department/save' do
           tmp.save
           t = {
             :tmp => n['id'],
-            :new_id => tmp.id
+            :id => tmp.id
           }
           array_news.push(t)
         end

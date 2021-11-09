@@ -95,8 +95,10 @@
 
   const save = () => {
     var dataToSend = {new:[], edit:[], delete:[]};
+    var recordId = null;
     observer.new.forEach(newed => {
       var key = Object.keys(newed)[0];
+      recordId = key;
       var value = newed[key];
       var record = dataSearch(key, value);
       delete record['actions'];
@@ -104,6 +106,7 @@
     });
     observer.edit.forEach(edited => {
       var key = Object.keys(edited)[0];
+      recordId = key;
       var value = edited[key];
       var record = dataSearch(key, value);
       delete record['actions'];
@@ -120,7 +123,11 @@
       'Content-Type': 'application/json',
     }})
     .then(function (response) {
-      console.log(response);
+      response.data[1].forEach(created => {
+        dataSearch(recordId, created.tmp)[recordId] = created[recordId];
+      });
+      data = data;
+      observer = { new: [], edit: [], delete: []};
     })
     .catch(function (error) {
       console.log(error);
