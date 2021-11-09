@@ -93,6 +93,25 @@
     data = data // for bind update
   }
 
+  const deleteRow = (event) => {
+    var idKey = event.target.parentElement.parentElement.firstChild.firstChild.getAttribute('key');
+    var rowKey = event.target.parentElement.parentElement.firstChild.firstChild.innerHTML;
+    if(observerSearch(idKey, rowKey, observer.new) != false){
+      var tmp = {[idKey]: rowKey};
+      observer.new = observer.new.filter(item => JSON.stringify(item) !== JSON.stringify(tmp));
+    }
+    if(observerSearch(idKey, rowKey, observer.edit) != false){
+      var tmp = {[idKey]: rowKey};
+      observer.edit = observer.edit.filter(item => JSON.stringify(item) !== JSON.stringify(tmp));
+      if(observerSearch(idKey, rowKey, observer.delete) == false){
+        observer.delete.push({[idKey]: rowKey});
+      }
+    }
+    if(observerSearch(idKey, rowKey, observer.delete) == false){
+      observer.delete.push({[idKey]: rowKey});
+    }
+  }
+
   const save = () => {
     var dataToSend = {new:[], edit:[], delete:[]};
     var recordId = null;
@@ -112,9 +131,14 @@
       delete record['actions'];
       dataToSend.edit.push(record);
     });
-    for(var x in observer.delete){
-      console.log(x)
-    }
+    observer.delete.forEach(deleted => {
+      var key = Object.keys(deleted)[0];
+      recordId = key;
+      var value = deleted[key];
+      var record = dataSearch(key, value);
+      delete record['actions'];
+      dataToSend.delete.push(record);
+    });
     axios.post(urlServices.save, JSON.stringify({
       news: dataToSend.new,
       edits: dataToSend.edit,
@@ -145,17 +169,21 @@
     {#each data as record}
     <tr>
       {#each Object.entries(rows) as [id, rowProps]}
-      <td style="{rowProps.style}">
-      {#if rowProps.type != 'actions'}
-        {#if rowProps.type == 'id'}
-          <span key="{id}">{record[id]}</span>
-        {:else if rowProps.type == 'input[text]'}
-          <input type="text" key="{id}" on:keydown={inputTextKeyDown} bind:value={record[id]}>
+        <td style="{rowProps.style}">
+        {#if rowProps.type != 'actions'}
+          {#if rowProps.type == 'id'}
+            <span key="{id}">{record[id]}</span>
+          {:else if rowProps.type == 'input[text]'}
+            <input type="text" key="{id}" on:keydown={inputTextKeyDown} bind:value={record[id]}>
+          {/if}
+        {:else}
+          {#each rowProps.buttons as action}
+            {#if action.type == 'delete'}
+              <i class="fa fa-times" aria-hidden="true" on:click={deleteRow}></i>
+            {/if}
+          {/each}
         {/if}
-      {:else}
-        <button>:)</button>
-      {/if}
-      </td>
+        </td>
       {/each}
     </tr>
     {/each}
@@ -194,7 +222,7 @@ tfoot tr td{
   padding-top: 5px;
 }
 
-thead tr th {
+thead th {
   padding: 2.5px !important;
 }
 

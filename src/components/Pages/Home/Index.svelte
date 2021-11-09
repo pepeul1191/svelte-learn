@@ -99,7 +99,9 @@
           actions:{
             type: 'actions',
             buttons: [
+              {type: 'delete', icon: 'fa fa-times'}
             ],
+            style: 'text-align:center;'
           },
         }}
         headers={[
@@ -112,6 +114,7 @@
           },
           {
             caption: 'Operaciones',
+            style:'text-align: center;',
           },]}
       />
     </div>

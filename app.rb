@@ -142,7 +142,7 @@ post '/department/save' do
       if deletes.length != 0
         deletes.each do |d|
           Department.where(
-            :id => d
+            :id => d['id']
         ).delete
         end
       end
