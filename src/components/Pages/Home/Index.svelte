@@ -80,12 +80,13 @@
       <Calendar />
     </div>
     <DemoForm />
-    <div class="col-md-12">
+    <div class="col-md-4">
       <DataTable 
         urlServices={{ 
           list: `${BASE_URL}department/list`, 
           save: `${BASE_URL}department/save` }}
         buttonAddRow={true},
+        buttonSave={true},
         buttonAddRecord={'/department/add'}
         rows={{
           id: {
@@ -97,12 +98,14 @@
           },
           actions:{
             type: 'actions',
-          }
+            buttons: [
+            ],
+          },
         }}
         headers={[
           {
             caption: 'codigo',
-            style: 'display:none',
+            style: 'display:noe',
           },
           {
             caption: 'Nombre de Departamento',

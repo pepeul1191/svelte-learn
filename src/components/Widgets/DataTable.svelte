@@ -9,7 +9,8 @@
   export let rows;
   export let buttonAddRow = false;
   export let buttonAddRecord = false;
-  let observer = { new: [], edit: [{id: 2, name:'XD 2'}, {id: 1, name:'XD 1'}], delete: []};
+  export let buttonSave = false;
+  export let observer = { new: [], edit: [], delete: []};
 
   onMount(() => {
     console.log(urlServices);
@@ -42,8 +43,6 @@
 
   function search(key, idSearched, observerArray){
     for (var i=0; i < observerArray.length; i++) {
-      console.log(observerArray[i][key])
-      console.log(idSearched)
       if (observerArray[i][key] == idSearched) {
         return observerArray[i];
       }
@@ -54,9 +53,14 @@
   const inputTextKeyDown = (event) => {
     var idKey = event.target.parentElement.parentElement.firstChild.firstChild.getAttribute('key');
     var rowKey = event.target.parentElement.parentElement.firstChild.firstChild.innerHTML;
-    var edited = search(idKey, rowKey, observer.edit)
-    if(edited == false){
-      observer.edit.push({[idKey]: rowKey})
+    if(String(rowKey).includes('tmp')){
+      if(search(idKey, rowKey, observer.new) == false){
+        observer.new.push({[idKey]: rowKey})
+      }
+    }else{
+      if(search(idKey, rowKey, observer.edit) == false){
+        observer.edit.push({[idKey]: rowKey})
+      }
     }
   };
 
@@ -79,6 +83,10 @@
     }
     data.push(tmp)
     data = data // for bind update
+  }
+
+  const save = () => {
+    alert('s')
   }
 </script>
   
@@ -115,6 +123,9 @@
         {/if}
         {#if buttonAddRecord != false}
         <a class="btn btn-primary" on:click|preventDefault={() => {navigate(buttonAddRecord)}} href="{buttonAddRecord}"> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</a>
+        {/if}
+        {#if buttonSave != false}
+        <button class="btn btn-success save-table" on:click={save}> <i class="fa fa-check" style="margin-right:5px"></i>Guardar Cambios</button>
         {/if}
       </td>
     </tr>
