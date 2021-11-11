@@ -13,6 +13,7 @@
   let alertMessageProps = {};
   let departmentDataTable;
   let provinceDataTable;
+  let districtDataTable;
 
   const dispatch = createEventDispatcher();
 
@@ -148,6 +149,8 @@
                   var departmentId = record.id;
                   provinceDataTable.urlServices.list = `${BASE_URL}province/list/${departmentId}`;
                   provinceDataTable.list();
+                  provinceDataTable.extraData.department_id = departmentId;
+                  districtDataTable.display = false;
                 },
               },
             ],
@@ -179,7 +182,7 @@
     <div class="col-md-4">
       <DataTable bind:this={provinceDataTable} 
         urlServices={{ 
-          list: `${BASE_URL}province/list/3`, 
+          list: `${BASE_URL}province/list/:id_department`, 
           save: `${BASE_URL}province/save` 
         }}
         buttonAddRow={true},
@@ -201,7 +204,13 @@
               {
                 type: 'custom', 
                 icon: 'fa fa-chevron-right', 
-                style:'font-size:12px; margin-left:5px;'
+                style:'font-size:12px; margin-left:5px;',
+                customFunction: (record) => {
+                  var provinceId = record.id;
+                  districtDataTable.urlServices.list = `${BASE_URL}district/list/${provinceId}`;
+                  districtDataTable.list();
+                  districtDataTable.extraData.province_id = provinceId;
+                },
               },
             ],
             style: 'text-align:center;'
@@ -226,6 +235,54 @@
             save404: 'Rercuso no encontrado para guardar los cambios de la tabla de provincias',
             save500: 'Ocurrió un error para guardar los cambios de la table de provincias',
             save200: 'Se han actualizado los registros de la tabla de provincias',
+          }}
+      />
+    </div>
+    <div class="col-md-4">
+      <DataTable bind:this={districtDataTable} 
+        urlServices={{ 
+          list: `${BASE_URL}district/list/:id_province`, 
+          save: `${BASE_URL}district/save` 
+        }}
+        buttonAddRow={true},
+        buttonSave={true},
+        rows={{
+          id: {
+            style: 'color: red;',
+            type: 'id',
+          },
+          name:{
+            type: 'input[text]',
+          },
+          actions:{
+            type: 'actions',
+            buttons: [
+              {
+                type: 'delete',
+              },
+            ],
+            style: 'text-align:center;'
+          },
+        }}
+        headers={[
+          {
+            caption: 'codigo',
+            style: 'display:noe',
+          },
+          {
+            caption: 'Nombre',
+          },
+          {
+            caption: 'Operaciones',
+            style:'text-align: center;',
+          },]}
+          messages={{
+            notChanges: 'No ha ejecutado cambios en la tabla de distritos',
+            list404: 'Rercuso no encontrado para listar los elmentos de la tabla de distritos',
+            list500: 'Ocurrió un error en listar los elementos de la tabla de distritos',
+            save404: 'Rercuso no encontrado para guardar los cambios de la tabla de distritos',
+            save500: 'Ocurrió un error para guardar los cambios de la table de distritos',
+            save200: 'Se han actualizado los registros de la tabla de distritos',
           }}
       />
     </div>

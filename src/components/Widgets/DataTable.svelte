@@ -10,6 +10,7 @@
   export let data = [];
   export let display = false;
   export let urlServices;
+  export let extraData = {};
   export let rows;
   export let buttonAddRow = false;
   export let buttonAddRecord = false;
@@ -193,7 +194,8 @@
       axios.post(urlServices.save, JSON.stringify({
           news: dataToSend.new,
           edits: dataToSend.edit,
-          deletes: dataToSend.delete
+          deletes: dataToSend.delete,
+          extra: extraData,
         }), {headers: {
           'Content-Type': 'application/json',
         }})

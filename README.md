@@ -117,7 +117,6 @@ TODO en DataTable:
 + Modal on close refresca datos
 + Paginacion
 + Filtros desde un formulario
-+ Botones de fila personalizados
 
 ---
 
