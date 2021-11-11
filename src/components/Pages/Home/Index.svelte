@@ -66,11 +66,6 @@
         validationExtension={
           {allowed: ['application/pdf'], message: 'Sólo PDFs'}
         }
-        message={
-          {
-            
-          }
-        }
         />
       </div>
     </div>
@@ -155,6 +150,14 @@
             caption: 'Operaciones',
             style:'text-align: center;',
           },]}
+          messages={{
+            notChanges: 'No ha ejecutado cambios en la tabla de departamentos',
+            list404: 'Rercuso no encontrado para listar los elmentos de la tabla de departamentos',
+            list500: 'Ocurrió un error en listar los elementos de la tabla de departamentos',
+            save404: 'Rercuso no encontrado para guardar los cambios de la tabla de departamentos',
+            save500: 'Ocurrió un error para guardar los cambios de la table de departamentos',
+            save200: 'Se han actualizado los registros de la tabla de departamentos',
+          }}
       />
     </div>
   </div>

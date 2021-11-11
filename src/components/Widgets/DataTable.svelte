@@ -13,6 +13,14 @@
   export let buttonAddRecord = false;
   export let buttonSave = false;
   export let observer = { new: [], edit: [], delete: []};
+  export let messages = {
+    notChanges: 'No ha ejecutado cambios en la tabla',
+    list404: 'Rercuso no encontrado para listar los elmentos de la tabla',
+    list500: 'Ocurrió un error en listar los elementos de la tabla',
+    save404: 'Rercuso no encontrado para guardar los cambios',
+    save500: 'Ocurrió un error para guardar los cambios',
+    save200: 'Se han actualizado los registros de la tabla',
+  };
 
   onMount(() => {
     list();
@@ -39,14 +47,17 @@
       console.error(error);
       if (error.response) {
         if(error.response.status == 404){
-          alertMessageStore.set({
-            component: AlertMessage,
-            props: {
-              message: 'Recurso no disponible',
-              type: 'danger',
-              timeOut: 8000
-            },
-          })
+          launchAlert({
+            message: messages.list404,
+            type: 'danger',
+            timeOut: 5000
+          });
+        }else{
+          launchAlert({
+            message: messages.list500,
+            type: 'danger',
+            timeOut: 5000
+          });
         }
         console.log(error.response.data);
         console.log(error.response.status);
@@ -170,28 +181,55 @@
       var value = deleted[key];
       dataToSend.delete.push({[key]: value});
     });
-    axios.post(urlServices.save, JSON.stringify({
-      news: dataToSend.new,
-      edits: dataToSend.edit,
-      deletes: dataToSend.delete
-    }), {headers: {
-      'Content-Type': 'application/json',
-    }})
-    .then(function (response) {
-      response.data[1].forEach(created => {
-        dataSearch(recordId, created.tmp)[recordId] = created[recordId];
-      });
-      data = data;
-      observer = { new: [], edit: [], delete: []};
+    if(dataToSend.new.length == 0 && dataToSend.edit.length == 0 && dataToSend.delete.length == 0){
       launchAlert({
-        message: 'hola mundo',
-        type: 'info',
-        timeOut: false
+        message: messages.notChanges,
+        type: 'warning',
+        timeOut: 5000
       });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    }else{
+      axios.post(urlServices.save, JSON.stringify({
+          news: dataToSend.new,
+          edits: dataToSend.edit,
+          deletes: dataToSend.delete
+        }), {headers: {
+          'Content-Type': 'application/json',
+        }})
+        .then(function (response) {
+          response.data[1].forEach(created => {
+            dataSearch(recordId, created.tmp)[recordId] = created[recordId];
+          });
+          data = data;
+          observer = { new: [], edit: [], delete: []};
+          launchAlert({
+            message: messages.save200,
+            type: 'success',
+            timeOut: 5000
+          });
+        })
+        .catch(function (error) {
+          console.error(error);
+          if (error.response) {
+            if(error.response.status == 404){
+              launchAlert({
+                message: messages.save404,
+                type: 'danger',
+                timeOut: 5000
+              });
+            }else{
+              launchAlert({
+                message: messages.save500,
+                type: 'danger',
+                timeOut: 5000
+              });
+            }
+            console.log(error.response.data);
+            console.log(error.response.status);
+            // console.log(error.response.headers);
+          }
+        }
+      );
+    }
   }
 </script>
 
