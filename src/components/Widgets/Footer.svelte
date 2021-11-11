@@ -11,7 +11,7 @@
 <style>
 footer{
 	margin-right: 0px;
-	background: #e9ecef!important;
+	background: #f1f1f1!important;
 	border-top: 1px solid #adb5bd;
 }
 </style>

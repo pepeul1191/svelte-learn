@@ -139,3 +139,4 @@ Fuentes:
 + https://newbedev.com/how-to-pass-parameters-to-on-click-in-svelte
 + https://svelte.dev/repl/74593f36569a4c268d8a6ab277db34b5?version=3.12.1
 + https://svelte.dev/tutorial/update
++ https://blog.openreplay.com/the-ultimate-guide-to-getting-started-with-the-rollup-js-javascript-bundler
