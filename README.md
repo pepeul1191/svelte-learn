@@ -126,3 +126,6 @@ Fuentes:
 + https://svelte.dev/repl/05ed848f455848a2a69db90dc0a1d1c1?version=3.29.7
 + https://github.com/pepeul1191/swp-backbone-js-plugins/blob/master/views/calendar.js
 + https://codesandbox.io/s/blue-hill-jrutq?from-embed
++ https://newbedev.com/how-to-pass-parameters-to-on-click-in-svelte
++ https://svelte.dev/repl/74593f36569a4c268d8a6ab277db34b5?version=3.12.1
++ https://svelte.dev/tutorial/update

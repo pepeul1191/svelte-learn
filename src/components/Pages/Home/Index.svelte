@@ -6,12 +6,22 @@
   import Calendar from './../../Widgets/Calendar.svelte';
   import Bar from './../../Modals/Bar.svelte';
   import { modal } from '../../Stores/modal.js';
+  import { alertMessage as alertMessageStore} from '../../Stores/alertMessage.js';
   import DataTable from '../../Widgets/DataTable.svelte';
-  
+  import AlertMessage from '../../Widgets/AlertMessage.svelte';
+  let alertMessage = null;
+  let alertMessageProps = {};
+  let txtMessage;
+  let typeMessage;
+  let alertComponent;
+
   const dispatch = createEventDispatcher();
 
   onMount(() => {
     console.log('index');
+    alertMessageStore.subscribe(value => {
+      alertMessage = value;
+    });
   });
 
   const showModal = () => {
@@ -19,6 +29,16 @@
     dispatch('showModal', {
 			param1: 'Hello!'
 		});
+  };
+
+  const launchAlert = (event, type) => {
+    alertMessage = null;
+    alertMessage = AlertMessage;
+    alertMessageProps = {
+      message: 'hola mundo',
+      type: type,
+      timeOut: 3000
+    }
   };
 </script>
 
@@ -80,6 +100,19 @@
       <Calendar />
     </div>
     <DemoForm />
+    <div class="row" style="padding-top:20px;">
+      <div class="col-md-4">
+        <button class="btn btn-primary" on:click|preventDefault={(event) => launchAlert(event,'primary')}>Demo Alert Primary</button>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-secondary" on:click|preventDefault={(event) => launchAlert(event,'secondary')}>Demo Alert Secondary</button>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-danger" on:click|preventDefault={(event) => launchAlert(event,'danger')}>Demo Alert Danger</button>
+      </div>
+    </div>
+    <AlertMessage message={'hola mundo'} type={'warning'} timeOut=5000 />
+    <svelte:component this={alertMessage} {...alertMessageProps} />
     <div class="col-md-4">
       <DataTable 
         urlServices={{ 

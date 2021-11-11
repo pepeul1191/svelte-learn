@@ -165,7 +165,7 @@
     });
   }
 </script>
-  
+
 <table class="table table-striped">
   <thead>
     {#each headers as headerProps}
