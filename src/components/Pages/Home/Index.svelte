@@ -11,17 +11,20 @@
   import AlertMessage from '../../Widgets/AlertMessage.svelte';
   let alertMessage = null;
   let alertMessageProps = {};
+  let departmentDataTable;
+  let provinceDataTable;
 
   const dispatch = createEventDispatcher();
 
   onMount(() => {
-    console.log('index');
+    // console.log('index');
     alertMessageStore.subscribe(value => {
       if(value != null){
         alertMessage = value.component;
         alertMessageProps = value.props;
       }
     });
+    departmentDataTable.list();
   });
 
   const showModal = () => {
@@ -115,10 +118,11 @@
     <AlertMessage message={'hola mundo'} type={'warning'} timeOut=5000 />
     <svelte:component this={alertMessage} {...alertMessageProps} />
     <div class="col-md-4">
-      <DataTable 
+      <DataTable bind:this={departmentDataTable} 
         urlServices={{ 
           list: `${BASE_URL}department/list`, 
-          save: `${BASE_URL}department/save` }}
+          save: `${BASE_URL}department/save` 
+        }}
         buttonAddRow={true},
         buttonSave={true},
         buttonAddRecord={'/department/add'}
@@ -133,7 +137,19 @@
           actions:{
             type: 'actions',
             buttons: [
-              {type: 'delete', icon: 'fa fa-times'}
+              {
+                type: 'delete',
+              },
+              {
+                type: 'custom', 
+                icon: 'fa fa-chevron-right', 
+                style:'font-size:12px; margin-left:5px;',
+                customFunction: (record) => {
+                  var departmentId = record.id;
+                  provinceDataTable.urlServices.list = `${BASE_URL}province/list/${departmentId}`;
+                  provinceDataTable.list();
+                },
+              },
             ],
             style: 'text-align:center;'
           },
@@ -144,7 +160,7 @@
             style: 'display:noe',
           },
           {
-            caption: 'Nombre de Departamento',
+            caption: 'Nombre',
           },
           {
             caption: 'Operaciones',
@@ -157,6 +173,59 @@
             save404: 'Rercuso no encontrado para guardar los cambios de la tabla de departamentos',
             save500: 'Ocurrió un error para guardar los cambios de la table de departamentos',
             save200: 'Se han actualizado los registros de la tabla de departamentos',
+          }}
+      />
+    </div>
+    <div class="col-md-4">
+      <DataTable bind:this={provinceDataTable} 
+        urlServices={{ 
+          list: `${BASE_URL}province/list/3`, 
+          save: `${BASE_URL}province/save` 
+        }}
+        buttonAddRow={true},
+        buttonSave={true},
+        rows={{
+          id: {
+            style: 'color: red;',
+            type: 'id',
+          },
+          name:{
+            type: 'input[text]',
+          },
+          actions:{
+            type: 'actions',
+            buttons: [
+              {
+                type: 'delete',
+              },
+              {
+                type: 'custom', 
+                icon: 'fa fa-chevron-right', 
+                style:'font-size:12px; margin-left:5px;'
+              },
+            ],
+            style: 'text-align:center;'
+          },
+        }}
+        headers={[
+          {
+            caption: 'codigo',
+            style: 'display:noe',
+          },
+          {
+            caption: 'Nombre',
+          },
+          {
+            caption: 'Operaciones',
+            style:'text-align: center;',
+          },]}
+          messages={{
+            notChanges: 'No ha ejecutado cambios en la tabla de provincias',
+            list404: 'Rercuso no encontrado para listar los elmentos de la tabla de provincias',
+            list500: 'Ocurrió un error en listar los elementos de la tabla de provincias',
+            save404: 'Rercuso no encontrado para guardar los cambios de la tabla de provincias',
+            save500: 'Ocurrió un error para guardar los cambios de la table de provincias',
+            save200: 'Se han actualizado los registros de la tabla de provincias',
           }}
       />
     </div>

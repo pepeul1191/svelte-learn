@@ -13,6 +13,10 @@ class Department < Sequel::Model(DB[:departments])
 
 end
 
+class Province < Sequel::Model(DB[:provinces])
+
+end
+
 class VWDistrict < Sequel::Model(DB[:vw_districts])
 
 end
@@ -203,6 +207,28 @@ get '/department/list' do
       :tipo_mensaje => 'error',
       :mensaje => [
         'Se ha producido un error en listar los departamentos',
+        e.message
+      ]
+    }.to_json
+    status = 500
+  end
+  status status
+  resp
+end
+
+get '/province/list/:department_id' do
+  resp = nil
+  status = 200
+  begin
+    department_id = params[:department_id]
+    puts(department_id)
+    resp = Province.select(:id, :name).where(
+      :department_id => department_id).all().to_a.to_json
+  rescue Exception => e
+    resp = {
+      :tipo_mensaje => 'error',
+      :mensaje => [
+        'Se ha producido un error en listar las provincias del departamento',
         e.message
       ]
     }.to_json

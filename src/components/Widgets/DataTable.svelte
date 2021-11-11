@@ -1,3 +1,4 @@
+<svelte:options accessors={true} />
 <script>
   import { onMount } from 'svelte';
   import axios from 'axios';
@@ -7,6 +8,7 @@
   import { alertMessage as alertMessageStore} from '../Stores/alertMessage.js';
   export let headers;
   export let data = [];
+  export let display = false;
   export let urlServices;
   export let rows;
   export let buttonAddRow = false;
@@ -23,11 +25,11 @@
   };
 
   onMount(() => {
-    list();
+    // list();
   });
   
-  const list = () => {
-    console.log(data)
+  export const list = () => {
+    // console.log(data)
     axios.get(urlServices.list, {
       params: {
         //[queryParam]: value
@@ -65,7 +67,7 @@
       }
     })
     .then(function () {
-      // TODO?
+      display = true;
     });
   };
 
@@ -233,6 +235,7 @@
   }
 </script>
 
+{#if display}
 <table class="table table-striped">
   <thead>
     {#each headers as headerProps}
@@ -253,7 +256,10 @@
         {:else}
           {#each rowProps.buttons as action}
             {#if action.type == 'delete'}
-              <i class="fa fa-times" aria-hidden="true" on:click={deleteRow}></i>
+              <i class="fa fa-times" style="{action.style}" aria-hidden="true" on:click={deleteRow}></i>
+            {/if}
+            {#if action.type == 'custom'}
+              <i class="{action.icon}" style="{action.style}" xd={record[id]} uuu="123" aria-hidden="true" on:click={action.customFunction(record)}></i>
             {/if}
           {/each}
         {/if}
@@ -269,7 +275,7 @@
         <button class="btn btn-primary" on:click={addRow}> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</button>
         {/if}
         {#if buttonAddRecord != false}
-        <a class="btn btn-primary" on:click|preventDefault={() => {navigate(buttonAddRecord)}} href="{buttonAddRecord}"> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</a>
+        <a class="btn btn-secondary" on:click|preventDefault={() => {navigate(buttonAddRecord)}} href="{buttonAddRecord}"> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</a>
         {/if}
         {#if buttonSave != false}
         <button class="btn btn-success save-table" on:click={save}> <i class="fa fa-check" style="margin-right:5px"></i>Guardar Cambios</button>
@@ -278,6 +284,7 @@
     </tr>
   </tfoot>
 </table>
+{/if}
 
 <style>
   .table-striped  tbody  tr:hover td{

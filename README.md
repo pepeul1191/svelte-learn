@@ -108,6 +108,17 @@ npm run build
 surge public my-project.surge.sh
 ```
 
+TODO en DataTable:
+
++ Select en celda
++ Autocomplete en celda
++ Checkbox en multiples celdas
++ Upload en fila
++ Modal on close refresca datos
++ Paginacion
++ Filtros desde un formulario
++ Botones de fila personalizados
+
 ---
 
 Fuentes:
