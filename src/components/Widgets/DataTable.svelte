@@ -309,14 +309,6 @@ thead th {
   padding: 2.5px !important;
 }
 
-table.list td {
-  text-align: left; padding-left: 10px;
-}
-
-table.list th {
-  text-align: left; padding-left: 10px;
-}
-
 td input[type="text"]{
   width: 100%;
   border: 0px;
@@ -398,5 +390,9 @@ table > tfoot > tr > td {
   top: -2px;
   position: relative;
   font-weight: 600;
+}
+
+tfoot > tr > td{
+  border-bottom: 0px;
 }
 </style>
