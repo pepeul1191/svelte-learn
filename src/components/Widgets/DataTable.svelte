@@ -2,7 +2,9 @@
   import { onMount } from 'svelte';
   import axios from 'axios';
   import { navigate } from 'svelte-routing';
+  import AlertMessage from './AlertMessage.svelte';
   import random from '../Helpers/random.js';
+  import { alertMessage as alertMessageStore} from '../Stores/alertMessage.js';
   export let headers;
   export let data = [];
   export let urlServices;
@@ -13,8 +15,6 @@
   export let observer = { new: [], edit: [], delete: []};
 
   onMount(() => {
-    console.log(urlServices);
-    console.log(rows);
     list();
   });
   
@@ -36,12 +36,36 @@
       });
     })
     .catch(function (error) {
-      console.log(error);
+      console.error(error);
+      if (error.response) {
+        if(error.response.status == 404){
+          alertMessageStore.set({
+            component: AlertMessage,
+            props: {
+              message: 'Recurso no disponible',
+              type: 'danger',
+              timeOut: 8000
+            },
+          })
+        }
+        console.log(error.response.data);
+        console.log(error.response.status);
+        // console.log(error.response.headers);
+      }
     })
-    .then(function () {});
+    .then(function () {
+      // TODO?
+    });
   };
 
-  function observerSearch(key, idSearched, observerArray){
+  const launchAlert = (props) => {
+    alertMessageStore.set({
+      component: AlertMessage,
+      props: props
+    })
+  };
+
+  const observerSearch = (key, idSearched, observerArray) => {
     for (var i=0; i < observerArray.length; i++) {
       if (observerArray[i][key] == idSearched) {
         return observerArray[i];
@@ -50,7 +74,7 @@
     return false;
   }
 
-  function dataSearch(key, idSearched){
+  const dataSearch = (key, idSearched) => {
     for (var i=0; i < data.length; i++) {
       if (data[i][key] == idSearched) {
         return data[i];
@@ -159,6 +183,11 @@
       });
       data = data;
       observer = { new: [], edit: [], delete: []};
+      launchAlert({
+        message: 'hola mundo',
+        type: 'info',
+        timeOut: false
+      });
     })
     .catch(function (error) {
       console.log(error);

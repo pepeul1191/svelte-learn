@@ -11,16 +11,16 @@
   import AlertMessage from '../../Widgets/AlertMessage.svelte';
   let alertMessage = null;
   let alertMessageProps = {};
-  let txtMessage;
-  let typeMessage;
-  let alertComponent;
 
   const dispatch = createEventDispatcher();
 
   onMount(() => {
     console.log('index');
     alertMessageStore.subscribe(value => {
-      alertMessage = value;
+      if(value != null){
+        alertMessage = value.component;
+        alertMessageProps = value.props;
+      }
     });
   });
 
@@ -65,7 +65,13 @@
         }
         validationExtension={
           {allowed: ['application/pdf'], message: 'Sólo PDFs'}
-        } />
+        }
+        message={
+          {
+            
+          }
+        }
+        />
       </div>
     </div>
     <div class="col-md-4">

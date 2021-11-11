@@ -33,4 +33,9 @@
   .row{
     padding-top:20px;
   }
+
+  .alert{
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+  }
 </style>
