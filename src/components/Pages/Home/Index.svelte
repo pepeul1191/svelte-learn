@@ -8,6 +8,8 @@
   import { modal } from '../../Stores/modal.js';
   import { alertMessage as alertMessageStore} from '../../Stores/alertMessage.js';
   import AlertMessage from '../../Widgets/AlertMessage.svelte';
+  let alertMessage = null;
+  let alertMessageProps = {};
 
   const dispatch = createEventDispatcher();
 
@@ -114,6 +116,7 @@
       </div>
     </div>
     <AlertMessage message={'hola mundo'} type={'warning'} timeOut=5000 />
+    <svelte:component this={alertMessage} {...alertMessageProps} />
   </div>
 </div>
 

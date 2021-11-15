@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w & ruby app.rb",
+    "dev": "rollup -c -w & rake dev:start",
     "start": "sirv public --no-clear"
   },
   "devDependencies": {
