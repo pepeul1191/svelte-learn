@@ -5,11 +5,12 @@ module Helpers
       resp = []
       if constants[:static_env] == 'dev'
         resp = [
-          'bower_components/bootstrap/dist/css/bootstrap.min',
-          'bower_components/font-awesome/css/font-awesome.min',
-          'assets/css/constants',
-          'assets/css/styles',
-          'assets/css/error',
+          #'bower_components/bootstrap/dist/css/bootstrap.min',
+          #'bower_components/font-awesome/css/font-awesome.min',
+          #'assets/css/constants',
+          #'assets/css/styles',
+          #'assets/css/error',
+          'build/bundle.error',
         ]
       else
         resp = [
