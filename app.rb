@@ -53,7 +53,7 @@ end
   end
 end
 
-['/', '/department/add'].each do |path|
+['/', '/department/add', '/master-data/locations'].each do |path|
   get path do
     locals = {}
     erb :'home', :locals => locals
