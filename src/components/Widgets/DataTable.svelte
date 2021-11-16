@@ -15,6 +15,7 @@
   export let buttonAddRow = false;
   export let buttonAddRecord = false;
   export let buttonSave = false;
+  export let pagination = false;
   export let observer = { new: [], edit: [], delete: []};
   export let queryParams = {};
   export let messages = {
@@ -27,23 +28,41 @@
   };
 
   onMount(() => {
-    // list();
+    if(pagination != false){
+      pagination.numberPages = 0;
+      pagination.page = 1;
+    }
   });
   
   export const list = () => {
     // console.log(data)
+    if(pagination != false){
+      queryParams.step = pagination.step;
+      queryParams.page = pagination.page;
+    }
     axios.get(urlServices.list, {
       params: queryParams
     })
     .then(function (response) {
       data = [];
-      response.data.forEach(record => {
-        var tmp = {};
-        for(var key in rows){
-          tmp[key]= record[key];
-        }
-        data.push(tmp);
-      });
+      if(pagination != false){
+        response.data.list.forEach(record => {
+          var tmp = {};
+          for(var key in rows){
+            tmp[key]= record[key];
+          }
+          data.push(tmp);
+        });
+        pagination.numberPages = response.data.pages;
+      }else{
+        response.data.forEach(record => {
+          var tmp = {};
+          for(var key in rows){
+            tmp[key]= record[key];
+          }
+          data.push(tmp);
+        });
+      }
     })
     .catch(function (error) {
       console.error(error);
@@ -233,7 +252,28 @@
         }
       );
     }
-  }
+  };
+
+  const goNext = () => {
+    pagination.page++;
+    list();
+  };
+
+  const goLast = () => {
+    pagination.page = pagination.numberPages;
+    list();
+  };
+
+  const goBegin = () => {
+    pagination.page = 1;
+    list();
+  };
+
+  const goPrevious = () => {
+    pagination.page--;
+    list();
+  };
+
 </script>
 
 {#if display}
@@ -262,7 +302,7 @@
               <i class="fa fa-times" style="{action.style}" aria-hidden="true" on:click={deleteRow}></i>
             {/if}
             {#if action.type == 'custom'}
-              <i class="{action.icon}" style="{action.style}" xd={record[id]} uuu="123" aria-hidden="true" on:click={action.customFunction(record)}></i>
+              <i class="{action.icon}" style="{action.style}" recordId={record[id]} uuu="123" aria-hidden="true" on:click={action.customFunction(record)}></i>
             {/if}
           {/each}
         {/if}
@@ -273,7 +313,20 @@
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="1000" style="text-align:right">
+      {#if pagination != false}
+      <td colspan="1" style="">
+        {#if pagination.page != 1}
+          <i class="fa fa-angle-double-left footer-icon pagination-btn" on:click="{goBegin}" aria-hidden="true"></i>
+          <i class="fa fa-angle-left footer-icon pagination-btn" on:click="{goPrevious}" aria-hidden="true"></i>
+        {/if}
+        <label class="pagination-number">{pagination.page} / {pagination.numberPages}</label>
+        {#if pagination.page != pagination.numberPages}
+          <i class="fa fa-angle-right footer-icon pagination-btn" on:click="{goNext}" aria-hidden="true"></i>
+          <i class="fa fa-angle-double-right footer-icon pagination-btn" on:click="{goLast}" aria-hidden="true"></i>
+        {/if}
+      </td>
+      {/if}
+      <td colspan="4" style="text-align:right">
         {#if buttonAddRow != false}
         <button class="btn btn-primary" on:click={addRow}> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</button>
         {/if}

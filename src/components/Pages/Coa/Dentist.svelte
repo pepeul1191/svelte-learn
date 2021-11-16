@@ -136,14 +136,17 @@
 						caption: 'Operaciones',
 						style:'text-align: center;',
 					},]}
-					messages={{
-						notChanges: 'No ha ejecutado cambios en la tabla de dentistas',
-						list404: 'Rercuso no encontrado para listar los elmentos de la tabla de dentistas',
-						list500: 'Ocurrió un error en listar los elementos de la tabla de dentistas',
-						save404: 'Rercuso no encontrado para guardar los cambios de la tabla de dentistas',
-						save500: 'Ocurrió un error para guardar los cambios de la table de dentistas',
-						save200: 'Se han actualizado los registros de la tabla de dentistas',
-					}}
+        messages={{
+          notChanges: 'No ha ejecutado cambios en la tabla de dentistas',
+          list404: 'Rercuso no encontrado para listar los elmentos de la tabla de dentistas',
+          list500: 'Ocurrió un error en listar los elementos de la tabla de dentistas',
+          save404: 'Rercuso no encontrado para guardar los cambios de la tabla de dentistas',
+          save500: 'Ocurrió un error para guardar los cambios de la table de dentistas',
+          save200: 'Se han actualizado los registros de la tabla de dentistas',
+        }}
+        pagination={{
+          step: 10,
+        }}
 			/>
 		</div>
   </div>

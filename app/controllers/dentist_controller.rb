@@ -6,7 +6,10 @@ class DentistController < ApplicationController
       name = params[:name]
       cop = params[:cop]
       rne = params[:rne]
+      page = params[:page]
+      step = params[:step]
       query = Dentist.select(:id, :name, :cop, :rne)
+      # wheres
       if name != nil
         query = query.where(
 					Sequel.like(:name, '%' + name + '%')
@@ -22,8 +25,23 @@ class DentistController < ApplicationController
 					Sequel.like(:rne, '%' + rne + '%')
 				)
       end
-      resp = query.to_a.to_json
+      # pagination
+      if (page != nil and step != nil)
+        count = query.count
+        offset = (page.to_i - 1) * step.to_i
+        query = query.offset(offset).limit(step)
+        # do query
+        #resp[:data] = query.to_a
+        resp = {
+          :list => query.to_a,
+          :pages => (count * 1.0 / step.to_i).ceil()
+        }.to_json
+      else
+        # do query
+        resp = query.to_a.to_json
+      end
     rescue Exception => e
+      puts e.backtrace
       resp = {
         :tipo_mensaje => 'error',
         :mensaje => [

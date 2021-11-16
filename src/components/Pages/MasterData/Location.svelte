@@ -161,7 +161,7 @@
 				buttonSave={true},
 				rows={{
 					id: {
-						style: 'color: red;',
+						style: 'color: red; display:none;',
 						type: 'id',
 					},
 					name:{
@@ -180,7 +180,7 @@
 				headers={[
 					{
 						caption: 'codigo',
-						style: 'display:noe',
+						style: 'display:none',
 					},
 					{
 						caption: 'Nombre',
