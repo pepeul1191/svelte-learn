@@ -9,9 +9,10 @@
 </footer>
 
 <style>
-footer{
-	margin-right: 0px;
-	background: #f1f1f1!important;
-	border-top: 1px solid #adb5bd;
-}
+	footer{
+		margin-right: 0px;
+		margin-top: 20px !important;
+		background: #f1f1f1!important;
+		border-top: 1px solid #adb5bd;
+	}
 </style>

@@ -124,7 +124,6 @@ TODO en DataTable:
 
 + Select en celda
 + Autocomplete en celda
-+ Checkbox en multiples celdas
 + Hipervinculo en fila carga modal
 + Upload en fila
 + Modal on close refresca datos

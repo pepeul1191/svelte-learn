@@ -128,6 +128,26 @@
     }
   };
 
+  const checkBoxChange = (event, key, value) => {
+    var idKey = event.target.parentElement.parentElement.firstChild.firstChild.getAttribute('key');
+    var rowKey = event.target.parentElement.parentElement.firstChild.firstChild.innerHTML;
+    // console.log(`id: ${idKey} - rowKey: ${rowKey} - value: ${value} - key: ${key}`);
+    for(var i = 0; i < data.length; i++){
+      if(data[i][idKey] == rowKey){
+        // update data
+        if(data[i][key] == 1){
+          data[i][key] = 0;
+        }else{
+          data[i][key] = 1;
+        }
+        // update observer
+        if(observerSearch(idKey, rowKey, observer.delete) == false){
+          observer.edit.push({[idKey]: rowKey})
+        }
+      }
+    }
+  };
+
   const addRow = () => {
     var tmp = {};
     for(var key of Object.keys(rows)){
@@ -293,6 +313,12 @@
             <span key="{id}">{record[id]}</span>
           {:else if rowProps.type == 'input[text]'}
             <input type="text" key="{id}" on:keydown={inputTextKeyDown} bind:value={record[id]}>
+          {:else if rowProps.type == 'input[check]'}
+            {#if record[id] == 1}
+              <input type="checkbox" key="{id}" on:change={() => checkBoxChange(event, id, record[id])} checked={true}>
+            {:else}
+              <input type="checkbox" key="{id}" on:change={() => checkBoxChange(event, id, record[id])} hecked={false}>
+            {/if}
           {:else if rowProps.type == 'td'}
             {record[id]}
           {/if}

@@ -127,4 +127,8 @@
   div .btn:not(:first-child) {
     margin-left: 10px;
   }
+
+  label{
+    margin-bottom:7px;
+  }
 </style>
