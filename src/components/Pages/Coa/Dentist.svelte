@@ -111,6 +111,13 @@
 					actions:{
 						type: 'actions',
 						buttons: [
+              {
+								type: 'link', 
+								icon: 'fa fa-pencil', 
+								style:'font-size:12px; margin-right:10px;',
+								url: '/coa/dentist/edit/',
+                key: 'id',
+							},
 							{
 								type: 'delete',
 							},

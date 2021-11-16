@@ -15,6 +15,7 @@
   import Location from '../Pages/MasterData/Location.svelte';
   import Specialism from '../Pages/MasterData/Specialism.svelte';
   import Dentist from '../Pages/Coa/Dentist.svelte';
+  import DentistDetail from '../Pages/Coa/DentistDetail.svelte';
   export let url = '';
   export let basepath = '/';
   let modalComponent;
@@ -67,6 +68,8 @@
     <Route path="/master-data/location" component="{Location}" />
     <Route path="/master-data/specialism" component="{Specialism}" />
     <Route path="/coa/dentist" component="{Dentist}" />
+    <Route path="/coa/dentist/add" component="{DentistDetail}" />
+    <Route path="/coa/dentist/edit/:id" let:params><DentistDetail id={params.id}/></Route>
     <Route path="/*" component="{Redirect404}" />
   </div>
 </Router>

@@ -302,7 +302,10 @@
               <i class="fa fa-times" style="{action.style}" aria-hidden="true" on:click={deleteRow}></i>
             {/if}
             {#if action.type == 'custom'}
-              <i class="{action.icon}" style="{action.style}" recordId={record[id]} uuu="123" aria-hidden="true" on:click={action.customFunction(record)}></i>
+              <i class="{action.icon}" style="{action.style}" recordId={record[id]} aria-hidden="true" on:click={action.customFunction(record)}></i>
+            {/if}
+            {#if action.type == 'link'}
+              <a href="{action.url + record[action.key]}" demo="{record}" on:click|preventDefault={() => {navigate(action.url + record[action.key])}}><i class="{action.icon}" style="{action.style}" aria-hidden="true"></i></a>
             {/if}
           {/each}
         {/if}
@@ -328,13 +331,13 @@
       {/if}
       <td colspan="4" style="text-align:right">
         {#if buttonAddRow != false}
-        <button class="btn btn-primary" on:click={addRow}> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</button>
+          <button class="btn btn-primary" on:click={addRow}> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</button>
         {/if}
         {#if buttonAddRecord != false}
-        <a class="btn btn-secondary" on:click|preventDefault={() => {navigate(buttonAddRecord)}} href="{buttonAddRecord}"> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</a>
+          <a class="btn btn-secondary" on:click|preventDefault={() => {navigate(buttonAddRecord)}} href="{buttonAddRecord}"> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</a>
         {/if}
         {#if buttonSave != false}
-        <button class="btn btn-success save-table" on:click={save}> <i class="fa fa-check" style="margin-right:5px"></i>Guardar Cambios</button>
+          <button class="btn btn-success save-table" on:click={save}> <i class="fa fa-check" style="margin-right:5px"></i>Guardar Cambios</button>
         {/if}
       </td>
     </tr>
