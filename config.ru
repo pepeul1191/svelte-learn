@@ -7,5 +7,6 @@ use UploadController
 use DepartmentController
 use ProvinceController
 use DistrictController
+use SpecialismController
 
 run ApplicationController

@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   before '/' do
     puts 'before2'
   end
-  ['/', '/master-data/locations'].each do |path|
+  ['/', '/master-data/location', '/master-data/specialism'].each do |path|
     get path do
       locals = {
         :title => 'Bienvenido',

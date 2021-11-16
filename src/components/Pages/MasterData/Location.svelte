@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { alertMessage as alertMessageStore} from '../../Stores/alertMessage.js';
   import DataTable from '../../Widgets/DataTable.svelte';
+	import Autocomplete from './../../Widgets/Autocomplete.svelte';
   let alertMessage = null;
   let alertMessageProps = {};
   let departmentDataTable;
@@ -21,7 +22,7 @@
 </script>
 
 <svelte:head>
-	<title>Ubicaciones del Perú</title>
+	<title>Gestipón de Ubicaciones del Perú</title>
 </svelte:head>
 
 <div class="container">
@@ -41,7 +42,7 @@
 				buttonAddRecord={'/department/add'}
 				rows={{
 					id: {
-						style: 'color: red;',
+						style: 'color: red; display:none;',
 						type: 'id',
 					},
 					name:{
@@ -72,7 +73,7 @@
 				headers={[
 					{
 						caption: 'codigo',
-						style: 'display:noe',
+						style: 'display:none',
 					},
 					{
 						caption: 'Nombre',
@@ -101,7 +102,7 @@
 				buttonSave={true},
 				rows={{
 					id: {
-						style: 'color: red;',
+						style: 'color: red; display:none;',
 						type: 'id',
 					},
 					name:{
@@ -131,7 +132,7 @@
 				headers={[
 					{
 						caption: 'codigo',
-						style: 'display:noe',
+						style: 'display:none',
 					},
 					{
 						caption: 'Nombre',
@@ -197,6 +198,19 @@
 						save200: 'Se han actualizado los registros de la tabla de distritos',
 					}}
 			/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12 page-header">
+			<h2>Autocompletar - Ubiaciones del Perú</h2>
+		</div>
+		<div class="col-md-12">
+			<div class="form-group">
+				<Autocomplete 
+					url={`${BASE_URL}district/search`} 
+				/>
+				<br>
+			</div>
 		</div>
 	</div>
 </div>

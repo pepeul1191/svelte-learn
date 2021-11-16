@@ -13,6 +13,7 @@
   import Foo from '../Modals/Foo.svelte';
   import Department from '../Pages/Home/Department.svelte';
   import Location from '../Pages/MasterData/Location.svelte';
+  import Specialism from '../Pages/MasterData/Specialism.svelte';
   export let url = '';
   export let basepath = '/';
   let modalComponent;
@@ -62,7 +63,8 @@
   <div>
     <Route path="/"><Index on:showModal={showModal}/></Route>
     <Route path="/department/add" component="{Department}" />
-    <Route path="/master-data/locations" component="{Location}" />
+    <Route path="/master-data/location" component="{Location}" />
+    <Route path="/master-data/specialism" component="{Specialism}" />
     <Route path="/*" component="{Redirect404}" />
   </div>
 </Router>

@@ -8,7 +8,8 @@
 		items = [
 			{name: 'Home', url: '/', active: true, items: []}, 
 			{name: 'Datos Maestros', url: '#', active: true, items: [
-				{name: 'Ubicaciones del Perú', url: '/master-data/locations', active: true}, 
+				{name: 'Ubicaciones del Perú', url: '/master-data/location', active: true}, 
+				{name: 'Espcialidades Clínicas', url: '/master-data/specialism', active: true}, 
 			]}, 
 		];
 	});  
