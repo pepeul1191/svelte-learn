@@ -11,6 +11,9 @@
 				{name: 'Ubicaciones del Perú', url: '/master-data/location', active: true}, 
 				{name: 'Espcialidades Clínicas', url: '/master-data/specialism', active: true}, 
 			]}, 
+			{name: 'COA', url: '#', active: true, items: [
+				{name: 'Gestión de Dentistas', url: '/coa/dentist', active: true}, 
+			]}, 
 		];
 	});  
 </script>

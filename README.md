@@ -128,7 +128,6 @@ TODO en DataTable:
 + Upload en fila
 + Modal on close refresca datos
 + Paginacion
-+ Filtros desde un formulario
 
 ---
 

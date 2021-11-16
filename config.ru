@@ -8,5 +8,6 @@ use DepartmentController
 use ProvinceController
 use DistrictController
 use SpecialismController
+use DentistController
 
 run ApplicationController

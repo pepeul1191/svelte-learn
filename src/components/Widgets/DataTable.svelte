@@ -16,6 +16,7 @@
   export let buttonAddRecord = false;
   export let buttonSave = false;
   export let observer = { new: [], edit: [], delete: []};
+  export let queryParams = {};
   export let messages = {
     notChanges: 'No ha ejecutado cambios en la tabla',
     list404: 'Rercuso no encontrado para listar los elmentos de la tabla',
@@ -32,9 +33,7 @@
   export const list = () => {
     // console.log(data)
     axios.get(urlServices.list, {
-      params: {
-        //[queryParam]: value
-      }
+      params: queryParams
     })
     .then(function (response) {
       data = [];
@@ -254,6 +253,8 @@
             <span key="{id}">{record[id]}</span>
           {:else if rowProps.type == 'input[text]'}
             <input type="text" key="{id}" on:keydown={inputTextKeyDown} bind:value={record[id]}>
+          {:else if rowProps.type == 'td'}
+            {record[id]}
           {/if}
         {:else}
           {#each rowProps.buttons as action}
