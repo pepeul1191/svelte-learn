@@ -9,5 +9,6 @@ use ProvinceController
 use DistrictController
 use SpecialismController
 use DentistController
+use BranchController
 
 run ApplicationController

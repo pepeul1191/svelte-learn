@@ -14,6 +14,7 @@
   export let validationMessage = '';
   export let valid = false;
   export let notEmptyMessage = 'Debe de seleccionar un elemento';
+  export let table = false;
   let validationMessageClass = '';
   let hints = [];
   let displayHints = false;
@@ -139,7 +140,6 @@
   }
 
   export const validate = () =>{
-    console.log('XD')
     if(valid == false){
       validationMessage = notEmptyMessage;
       validationMessageClass = 'text-danger';
@@ -149,18 +149,22 @@
   };
 </script>
 <div bind:this={root}>
+  {#if table == false}
   <label for="file" class="{(validationMessageClass != 'text-warning') ? validationMessageClass : ''}">{label}</label>
-  <input type="text" class="form-control {(validationMessageClass == 'text-danger') ? 'is-invalid' : ''}" placeholder="{placeholder}" bind:value={value} on:keydown={keyDown} on:input="{search}" on:blur="{focusout}">
+  {/if}
+  <input type="text" class="form-control {table ? 'form-autocomplete-table' : ''} {(validationMessageClass == 'text-danger') ? 'is-invalid' : ''}" placeholder="{placeholder}" bind:value={value} on:keydown={keyDown} on:input="{search}" on:blur="{focusout}">
   <ul class="hint-container {displayHints ? '' : 'd-none'}">
     {#each hints as hint}
       <li hint-id="{hint[hintKey]}" on:click={hintClick(hint[hintKey], hint[hintValue])} on:mousemove={hintHover}>{hint.name}</li>
     {/each}
   </ul>
+  {#if table == false}
   <div class="col-sm-12 validation-message">
     <small id="validationHelp" class="{validationMessageClass}">
       {validationMessage}
     </small>
   </div>
+  {/if}
 </div>
 
 <style>
@@ -192,5 +196,23 @@
 
   li:hover {
     cursor: pointer;
+  }
+
+  td > div > input[type="text"] {
+    padding: 0px;
+    font-weight: 440 !important;
+    border: 0px;
+    background: transparent;
+    color: #484848;
+  }
+
+  div > input[type="text"] {
+    font-weight: 440 !important;
+    color: #484848;
+  }
+
+  .form-autocomplete-table{
+    border: 0px;
+    background: transparent;
   }
 </style>

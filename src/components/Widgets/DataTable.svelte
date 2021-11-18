@@ -4,6 +4,7 @@
   import axios from 'axios';
   import { navigate } from 'svelte-routing';
   import AlertMessage from './AlertMessage.svelte';
+  import Autocomplete from './Autocomplete.svelte';
   import random from '../Helpers/random.js';
   import { alertMessage as alertMessageStore} from '../Stores/alertMessage.js';
   export let headers;
@@ -49,7 +50,15 @@
         response.data.list.forEach(record => {
           var tmp = {};
           for(var key in rows){
-            tmp[key]= record[key];
+            if(key.includes('::')){
+              var keyes = key.split('::');
+              keyes.forEach(key => {
+                console.log(key)
+                tmp[key]= record[key];  
+              });
+            }else{
+              tmp[key]= record[key];
+            }
           }
           data.push(tmp);
         });
@@ -58,7 +67,15 @@
         response.data.forEach(record => {
           var tmp = {};
           for(var key in rows){
-            tmp[key]= record[key];
+            if(key.includes('::')){
+              var keyes = key.split('::');
+              keyes.forEach(key => {
+                console.log(key)
+                tmp[key]= record[key];  
+              });
+            }else{
+              tmp[key]= record[key];
+            }
           }
           data.push(tmp);
         });
@@ -156,6 +173,9 @@
           tmp[key] = `tmp_${random(10)}`;
           break;
         case 'input[text]':
+          tmp[key] = '';
+          break;
+        case 'autocomplete':
           tmp[key] = '';
           break;
         case 'actions':
@@ -321,6 +341,8 @@
             {/if}
           {:else if rowProps.type == 'td'}
             {record[id]}
+          {:else if rowProps.type =='autocomplete'}
+            <Autocomplete url={rowProps.url} bind:recordValue={rowProps.recordValue} bind:value="{record[rowProps.recordValue]}" bind:valueId={record[rowProps.recordId]} table={true}  />
           {/if}
         {:else}
           {#each rowProps.buttons as action}
@@ -478,4 +500,18 @@ table > tfoot > tr > td {
 tfoot > tr > td{
   border-bottom: 0px;
 }
+
+div > input[type="text"] {
+  padding: 0px;
+  font-weight: 440 !important;
+  border: 0px;
+  background: transparent;
+  color: #484848;
+}
+
+.form-autocomplete{
+  border: 0px;
+  background: transparent;
+}
+
 </style>

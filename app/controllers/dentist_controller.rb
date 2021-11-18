@@ -175,4 +175,25 @@ class DentistController < ApplicationController
 		status status
 		resp
 	end
+
+  get '/dentist/branch/list' do
+    resp = nil
+    status = 200
+    begin
+      dentist_id = params[:dentist_id]
+      resp = VWDentistBranch.select(:id, :branch_id, :branch_name).where(
+        :dentist_id => dentist_id).all().to_a.to_json
+    rescue Exception => e
+      resp = {
+        :tipo_mensaje => 'error',
+        :mensaje => [
+          'Se ha producido un error en listar las provincias del departamento',
+          e.message
+        ]
+      }.to_json
+      status = 500
+    end
+    status status
+    resp
+  end
 end

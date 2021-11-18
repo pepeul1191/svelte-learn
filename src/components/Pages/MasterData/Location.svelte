@@ -206,9 +206,7 @@
 		</div>
 		<div class="col-md-12">
 			<div class="form-group">
-				<Autocomplete 
-					url={`${BASE_URL}district/search`} 
-				/>
+				<Autocomplete url={`${BASE_URL}district/search`} />
 				<br>
 			</div>
 		</div>

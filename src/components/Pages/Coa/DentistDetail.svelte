@@ -9,6 +9,7 @@
   let alertMessage = null;
   let alertMessageProps = {};
   let dentistSpecialismDataTable;
+  let dentistBranchDataTable;
   let name = '';
   let cop = '';
   let rne = '';
@@ -26,10 +27,13 @@
     }else{
       title = 'Editar Dentista';
     }
-    dentistSpecialismDataTable.urlServices.list = `dentist/specialism/list?dentist_id=${id}`;
+    // dentist specialism table
     dentistSpecialismDataTable.urlServices.list = `dentist/specialism/list?dentist_id=${id}`;
     dentistSpecialismDataTable.list();
     dentistSpecialismDataTable.extraData.dentist_id = id;
+    // dentist branch table
+    dentistBranchDataTable.urlServices.list = `dentist/branch/list?dentist_id=${id}`;
+    dentistBranchDataTable.list();
   });
 
   const saveDetail = () => {
@@ -147,7 +151,54 @@
 			/>
     </div>
     <div class="col-md-6">
-      
+      <br>
+      <h6>Sedes Donde Labora</h6>
+      <DataTable bind:this={dentistBranchDataTable} 
+				urlServices={{ 
+					list: `${BASE_URL}dentist/branch/list`, 
+					save: `${BASE_URL}dentist/branch/save` 
+				}}
+				buttonSave={true},
+        buttonAddRow={true},
+				rows={{
+					id: {
+						style: 'color: red; display:none;',
+						type: 'id',
+					},
+					'branch_name::branch_id':{
+						type: 'autocomplete',
+            url: 'branch/search',
+            recordValue: 'branch_name',
+            recordId: 'branch_id',
+					},
+					actions:{
+						type: 'actions',
+						buttons: [
+							{
+								type: 'delete',
+							},
+						],
+						style: 'text-align:center;'
+					},
+				}}
+				headers={[
+					{
+						caption: 'codigo',
+						style: 'display:none;',
+					},
+					{
+						caption: 'Nombre',
+					},
+				]}
+				messages={{
+					notChanges: 'No ha ejecutado cambios en la tabla de sedes del dentista',
+					list404: 'Rercuso no encontrado para listar los elmentos de la tabla de sedes del dentista',
+					list500: 'Ocurrió un error en listar los elementos de la tabla de sedes del dentista',
+					save404: 'Rercuso no encontrado para guardar los cambios de la tabla de sedes del dentista',
+					save500: 'Ocurrió un error para guardar los cambios de la table de sedes del dentista',
+					save200: 'Se han actualizado los registros de la tabla de sedes del dentista',
+				}}
+			/>
     </div>
   </div>
 </div>
