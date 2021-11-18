@@ -144,6 +144,14 @@
         valid = true;
         hints = [];
         displayHints = false;
+        // if in table, dispatch to table observer
+        if(table){
+          dispatch('autocompleteHintClick', {
+            valueId: valueId,
+            rowId: rowId,
+            idKey: idKey,
+          });
+        }
         break;
       default:
         break;
