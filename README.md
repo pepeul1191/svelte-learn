@@ -123,7 +123,6 @@ Ejecutar con rerun:
 TODO en DataTable:
 
 + Select en celda
-+ Autocomplete en celda
 + Hipervinculo en fila carga modal
 + Upload en fila
 + Modal on close refresca datos
@@ -168,3 +167,4 @@ Fuentes Svelte:
 + https://svelte.dev/tutorial/update
 + https://blog.openreplay.com/the-ultimate-guide-to-getting-started-with-the-rollup-js-javascript-bundler
 + https://github.com/sveltejs/svelte/issues/892
++ https://svelte.dev/repl/43bfe9802c88462aac11b87025b9534d?version=3.29.4 Components: Event Dispatcher: from child to parent

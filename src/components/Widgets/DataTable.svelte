@@ -28,6 +28,7 @@
     save200: 'Se han actualizado los registros de la tabla',
   };
 
+
   onMount(() => {
     if(pagination != false){
       pagination.numberPages = 0;
@@ -46,40 +47,27 @@
     })
     .then(function (response) {
       data = [];
+      var responseData = [];
       if(pagination != false){
-        response.data.list.forEach(record => {
-          var tmp = {};
-          for(var key in rows){
-            if(key.includes('::')){
-              var keyes = key.split('::');
-              keyes.forEach(key => {
-                console.log(key)
-                tmp[key]= record[key];  
-              });
-            }else{
-              tmp[key]= record[key];
-            }
-          }
-          data.push(tmp);
-        });
+        responseData = response.data.list;
         pagination.numberPages = response.data.pages;
       }else{
-        response.data.forEach(record => {
-          var tmp = {};
-          for(var key in rows){
-            if(key.includes('::')){
-              var keyes = key.split('::');
-              keyes.forEach(key => {
-                console.log(key)
-                tmp[key]= record[key];  
-              });
-            }else{
-              tmp[key]= record[key];
-            }
-          }
-          data.push(tmp);
-        });
+        responseData = response.data;
       }
+      responseData.forEach(record => {
+        var tmp = {};
+        for(var key in rows){
+          if(key.includes('::')){
+            var keyes = key.split('::');
+            keyes.forEach(key => {
+              tmp[key]= record[key];  
+            });
+          }else{
+            tmp[key]= record[key];
+          }
+        }
+        data.push(tmp);
+      });
     })
     .catch(function (error) {
       console.error(error);
@@ -141,6 +129,23 @@
     }else{
       if(observerSearch(idKey, rowKey, observer.edit) == false){
         observer.edit.push({[idKey]: rowKey})
+      }
+    }
+  };
+
+  function autocompleteHintClick(event){
+    if(typeof(event) !== 'undefined' && event !== null){
+      console.log(event.detail)
+      var rowKey = event.detail.rowId;
+      var idKey = event.detail.idKey;
+      if(String(rowKey).includes('tmp')){
+        if(observerSearch(idKey, rowKey, observer.new) == false){
+          observer.new.push({[idKey]: rowKey})
+        }
+      }else{
+        if(observerSearch(idKey, rowKey, observer.edit) == false){
+          observer.edit.push({[idKey]: rowKey})
+        }
       }
     }
   };
@@ -342,7 +347,16 @@
           {:else if rowProps.type == 'td'}
             {record[id]}
           {:else if rowProps.type =='autocomplete'}
-            <Autocomplete url={rowProps.url} bind:recordValue={rowProps.recordValue} bind:value="{record[rowProps.recordValue]}" bind:valueId={record[rowProps.recordId]} table={true}  />
+            <Autocomplete 
+              url={rowProps.url} 
+              bind:recordValue={rowProps.recordValue} 
+              bind:value="{record[rowProps.recordValue]}" 
+              bind:valueId={record[rowProps.recordId]} 
+              table={true} 
+              bind:rowId={record[rowProps.rowId]} 
+              on:autocompleteHintClick={autocompleteHintClick}
+              bind:idKey={rowProps.rowId}
+            />
           {/if}
         {:else}
           {#each rowProps.buttons as action}

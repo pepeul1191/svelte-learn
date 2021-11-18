@@ -196,4 +196,67 @@ class DentistController < ApplicationController
     status status
     resp
   end
+
+  post '/dentist/branch/save' do
+    resp = nil
+		status = 200
+		payload = JSON.parse(request.body.read)
+		news = payload['news']
+    edits = payload['edits']
+    deletes = payload['deletes']
+		dentist_id = payload['extra']['dentist_id']
+		resp = []
+		array_news = []
+		error = false
+		execption = nil
+		DB.transaction do
+			begin
+				if news.length != 0
+          news.each do |n|
+            tmp = DentistBranch.new(
+              :branch_id => n['branch_id'],
+              :dentist_id => dentist_id
+            )
+            tmp.save
+            t = {
+              :tmp => n['id'],
+              :id => tmp.id
+            }
+            array_news.push(t)
+          end
+        end
+        if edits.length != 0
+          edits.each do |e|
+            tmp = DentistBranch.where(
+              :id => e['id']
+            ).first
+            puts e
+            tmp.branch_id = e['branch_id']
+            tmp.save
+          end
+        end
+        if deletes.length != 0
+          deletes.each do |d|
+            DentistBranch.where(
+              :id => d['id']
+          ).delete
+          end
+        end
+			rescue Exception => e
+				Sequel::Rollback
+				error = true
+				execption = e
+			end
+		end
+		if error == false
+			resp = ['Se ha asosiado las sedes al dentista', array_news].to_json
+		else
+			status = 500
+			resp = [
+				'Se ha producido un error en asosiar las sedes al dentista',
+				execption.message].to_json
+		end
+		status status
+		resp
+	end
 end

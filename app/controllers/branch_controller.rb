@@ -3,14 +3,14 @@ class BranchController < ApplicationController
 		resp = nil
 		status = 200
 		begin
-			list = VWDentistBranch.where(
-					Sequel.like(:branch_name, '%' + params[:name] + '%')
-				).group(:branch_name).limit(10).to_a
+			list = VWBranchType.select(:id, :name).where(
+					Sequel.like(:name, '%' + params[:name] + '%')
+				).limit(10).to_a
 			resp = []
 			list.each do |e|
 				resp.push({
 					:id => e.id,
-					:branch_name => e.branch_name,
+					:branch_name => e.name,
 				})
 			end
 			resp = resp.to_json

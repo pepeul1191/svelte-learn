@@ -33,6 +33,7 @@
     dentistSpecialismDataTable.extraData.dentist_id = id;
     // dentist branch table
     dentistBranchDataTable.urlServices.list = `dentist/branch/list?dentist_id=${id}`;
+    dentistBranchDataTable.extraData.dentist_id = id;
     dentistBranchDataTable.list();
   });
 
@@ -170,6 +171,7 @@
             url: 'branch/search',
             recordValue: 'branch_name',
             recordId: 'branch_id',
+            rowId: 'id',
 					},
 					actions:{
 						type: 'actions',

@@ -1,6 +1,6 @@
 <script>
   import axios from 'axios';
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
   export let label = 'Buscar por texto';
   export let placeholder = 'Ingrese texto';
   export let value;
@@ -15,12 +15,15 @@
   export let valid = false;
   export let notEmptyMessage = 'Debe de seleccionar un elemento';
   export let table = false;
+  export let rowId = null; // only if autocomplete is in table
+  export let idKey = null; // only if autocomplete is in table
   let validationMessageClass = '';
   let hints = [];
   let displayHints = false;
   let childHintActive = -1;
   let root;
   let ul;
+  const dispatch = createEventDispatcher();
 
   onMount(() => {
     ul = root.querySelector('ul');
@@ -74,6 +77,14 @@
     valid = true;
     hints = [];
     displayHints = false;
+    // if in table, dispatch to table observer
+    if(table){
+      dispatch('autocompleteHintClick', {
+        valueId: valueId,
+        rowId: rowId,
+        idKey: idKey,
+      });
+    }
   };
 
   const focusout = (event) => {
