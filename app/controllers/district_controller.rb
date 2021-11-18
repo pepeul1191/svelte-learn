@@ -7,13 +7,10 @@ class DistrictController < ApplicationController
 			resp = District.select(:id, :name).where(
 				:province_id => province_id).all().to_a.to_json
 		rescue Exception => e
-			resp = {
-				:tipo_mensaje => 'error',
-				:mensaje => [
+			resp = [
 					'Se ha producido un error en listar los distritos de la provincia',
 					e.message
-				]
-			}.to_json
+				].to_json
 			status = 500
 		end
 		status status
@@ -98,13 +95,10 @@ class DistrictController < ApplicationController
 			end
 			resp = resp.to_json
 		rescue Exception => e
-			resp = {
-				:tipo_mensaje => 'error',
-				:mensaje => [
+			resp = [
 					'Se ha producido un error en buscar coincidencias en los nombres de los distritos',
 					e.message
-				]
-			}.to_json
+				].to_json
 			status = 500
 		end
 		status status

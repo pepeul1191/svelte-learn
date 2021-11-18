@@ -9,7 +9,7 @@
   afterUpdate(() => {
     if(message != ''){
       if(timeOut != false){
-        setTimeout(clearMessage, 5000);
+        setTimeout(clearMessage, timeOut);
       }
     } 
   });
@@ -20,8 +20,8 @@
 </script>
 
 {#if message != ''}
-<div class="row">
-  <div class="col-md-12">
+<div class="row" style="padding-top:0px;padding-right: 0px;">
+  <div class="col-md-12" style="padding-right: 0px;">
     <div class="alert alert-{type}" role="alert">
       {message}
     </div>

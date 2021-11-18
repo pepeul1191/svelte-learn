@@ -5,6 +5,7 @@
   export let fileName = 'file';
   export let baseUrlFile = '/';
   export let label = 'Seleccionar Archivo';
+  export let disabled = false;
   export let validationSize = {
     size: 3, // MB, (MB = B / 1024^2) ... https://www.to-convert.com/en/computer/convert-byte-to-mb.php
     message: 'Archivo del tamaño supera el máximo permitido'
@@ -100,14 +101,14 @@
 
 <label for="file" class="{validationMessageClass != 'text-success' ? validationMessageClass : ''}">{label}</label>
 <div>
-  <button class="btn {chooserButton.class}" on:click="{selectFile}">
+  <button class="btn {chooserButton.class}" on:click="{selectFile}" disabled={disabled} >
     <i class="fa {chooserButton.icon}" aria-hidden="true"></i>{chooserButton.label}
   </button>
-  <button class="btn {uploadButton.class}" on:click="{uploadFile}">
+  <button class="btn {uploadButton.class}" on:click="{uploadFile}" disabled={disabled} >
     <i class="fa {uploadButton.icon}" aria-hidden="true"></i>{uploadButton.label} 
   </button>
   {#if viewButton.display}
-  <button class="btn {viewButton.class}" on:click="{viewFile}">
+  <button class="btn {viewButton.class}" on:click="{viewFile}" disabled={disabled} >
     <i class="fa {viewButton.icon}" aria-hidden="true"></i>{viewButton.label} 
   </button>
   {/if}

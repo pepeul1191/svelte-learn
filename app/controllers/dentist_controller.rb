@@ -91,6 +91,27 @@ class DentistController < ApplicationController
     resp
   end
 
+  get '/dentist/get' do
+    resp = nil
+    status = 200
+    begin
+      id = params[:id]
+      resp = Dentist.where(:id => id).first.to_json
+      if resp == 'null'
+        status = 404
+      end
+    rescue Exception => e
+      puts e.backtrace
+      resp = [
+        'Se ha producido un error en listar las especialidades del dentista',
+        e.message
+      ].to_json
+      status = 500
+    end
+    status status
+    resp
+  end
+
   get '/dentist/specialism/list' do
     resp = nil
     status = 200
@@ -112,13 +133,10 @@ class DentistController < ApplicationController
       ''', dentist_id).to_a.to_json
     rescue Exception => e
       puts e.backtrace
-      resp = {
-        :tipo_mensaje => 'error',
-        :mensaje => [
-          'Se ha producido un error en listar las especialidades del dentista',
-          e.message
-        ]
-      }.to_json
+      resp = [
+        'Se ha producido un error en listar las especialidades del dentista',
+        e.message
+      ].to_json
       status = 500
     end
     status status

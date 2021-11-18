@@ -15,13 +15,10 @@ class BranchController < ApplicationController
 			end
 			resp = resp.to_json
 		rescue Exception => e
-			resp = {
-				:tipo_mensaje => 'error',
-				:mensaje => [
+			resp = [
 					'Se ha producido un error en buscar coincidencias en los nombres de los sedes',
 					e.message
-				]
-			}.to_json
+				].to_json
 			status = 500
 		end
 		status status

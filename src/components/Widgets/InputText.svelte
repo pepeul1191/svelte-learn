@@ -8,6 +8,7 @@
   export let valid = true;
   export let validations = [];
   export let label = '';
+  export let disabled = false;
   let randId;
   let validationMessageClass = '';
 
@@ -84,7 +85,7 @@
 </script>
 
 <label for="{randId}" class="form-label {validationMessageClass}">{label}</label>
-<input type="text" class="form-control {(validationMessageClass == 'text-danger') ? 'is-invalid' : ''}" id="{randId}" placeholder="{placeholder}" bind:value={value} on:input="{validate}">
+<input type="text" class="form-control {(validationMessageClass == 'text-danger') ? 'is-invalid' : ''}" disabled={disabled} id="{randId}" placeholder="{placeholder}" bind:value={value} on:input="{validate}">
 <small id="randIdHelp" class="{validationMessageClass}">
   {validationMessage}
 </small>

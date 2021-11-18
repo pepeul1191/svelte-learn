@@ -5,13 +5,10 @@ class SpecialismController < ApplicationController
 		begin
 			resp = Specialism.all().to_a.to_json
 		rescue Exception => e
-			resp = {
-				:tipo_mensaje => 'error',
-				:mensaje => [
+			resp = [
 					'Se ha producido un error en listar las espcialidades',
 					e.message
-				]
-			}.to_json
+				].to_json
 			status = 500
 		end
 		status status

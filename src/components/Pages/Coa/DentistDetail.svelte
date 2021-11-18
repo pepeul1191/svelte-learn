@@ -3,8 +3,11 @@
   import InputText from '../../Widgets/InputText.svelte';
   import UploadFile from '../../Widgets/UploadFile.svelte';
   import DataTable from '../../Widgets/DataTable.svelte';
+  import AlertMessage from '../../Widgets/AlertMessage.svelte';
   import { alertMessage as alertMessageStore} from '../../Stores/alertMessage.js';
+  import { getDentistById } from '../../../services/dentist_service.js';
   export let id;
+  export let disabled = false;
   let title = '';
   let alertMessage = null;
   let alertMessageProps = {};
@@ -14,18 +17,20 @@
   let cop = '';
   let rne = '';
 
-  onMount(() => {
+  onMount(() => {    
     alertMessageStore.subscribe(value => {
       if(value != null){
         alertMessage = value.component;
         alertMessageProps = value.props;
       }
     });
+    // ajax
     if(id === undefined){
       title = 'Crear Dentista';
       id = 'E';
     }else{
       title = 'Editar Dentista';
+      loadDentist(id);
     }
     // dentist specialism table
     dentistSpecialismDataTable.urlServices.list = `dentist/specialism/list?dentist_id=${id}`;
@@ -36,6 +41,33 @@
     dentistBranchDataTable.extraData.dentist_id = id;
     dentistBranchDataTable.list();
   });
+
+  const launchAlert = (event, message, type) => {
+    alertMessage = null;
+    alertMessage = AlertMessage;
+    alertMessageProps = {
+      message: message,
+      type: type,
+      timeOut: 5000
+    }
+  };
+
+  const loadDentist = (id) => {
+    var resp = getDentistById(id);
+    resp.then((resp) => {
+      var data = resp.data;
+      name = data.name;
+      rne = data.rne;
+      cop = data.cop;
+    }).catch((resp) =>  {
+      disabled = true;
+      if(resp.status == 404){
+        launchAlert(null, 'Dentista a editar no existe', 'warning');
+      }else{
+        launchAlert(null, 'Ocurrió un error en obtener los datos del dentista', 'danger');
+      }
+    })
+  };
 
   const saveDetail = () => {
 
@@ -59,6 +91,7 @@
         label={'Nombre Completo'}
         bind:value={name}
         placeholder={'Ingrese nombre'} 
+        disabled={disabled}
       />
     </div>
     <div class="col-md-3">
@@ -83,6 +116,7 @@
         validationExtension={
           {allowed: ['image/png', 'image/jpg', 'image/jpeg'], message: 'Sólo Imágenes'}
         }
+        disabled={disabled}
         />
       </div>
     </div>
@@ -91,6 +125,7 @@
         label={'COP'}
         bind:value={cop}
         placeholder={'COP'} 
+        disabled={disabled}
       />
     </div>
     <div class="col-md-1">
@@ -98,10 +133,11 @@
         label={'RNE'}
         bind:value={rne}
         placeholder={'RNE'} 
+        disabled={disabled}
       />
     </div>
     <div class="col-md-2" style="padding-top:27px;">
-      <button class="btn btn-success" on:click="{saveDetail}"><i class="fa fa-search" aria-hidden="true"></i>
+      <button class="btn btn-success" disabled="{disabled}" on:click="{saveDetail}"><i class="fa fa-search" aria-hidden="true"></i>
         Guardar</button>
     </div>
   </div>
@@ -121,7 +157,7 @@
 						type: 'id',
 					},
 					name:{
-						type: 'input[text]',
+						type: 'td',
 					},
           exist:{
 						type: 'input[check]',
@@ -148,7 +184,8 @@
 					save404: 'Rercuso no encontrado para guardar los cambios de la tabla de especialidades del dentista',
 					save500: 'Ocurrió un error para guardar los cambios de la table de especialidades del dentista',
 					save200: 'Se han actualizado los registros de la tabla de especialidades del dentista',
-				}}
+				}},
+        disabled={disabled}
 			/>
     </div>
     <div class="col-md-6">
@@ -200,6 +237,7 @@
 					save500: 'Ocurrió un error para guardar los cambios de la table de sedes del dentista',
 					save200: 'Se han actualizado los registros de la tabla de sedes del dentista',
 				}}
+        disabled={disabled}
 			/>
     </div>
   </div>

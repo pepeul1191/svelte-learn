@@ -19,6 +19,7 @@
   export let pagination = false;
   export let observer = { new: [], edit: [], delete: []};
   export let queryParams = {};
+  export let disabled = false;
   export let messages = {
     notChanges: 'No ha ejecutado cambios en la tabla',
     list404: 'Rercuso no encontrado para listar los elmentos de la tabla',
@@ -337,12 +338,12 @@
           {#if rowProps.type == 'id'}
             <span key="{id}">{record[id]}</span>
           {:else if rowProps.type == 'input[text]'}
-            <input type="text" key="{id}" on:keydown={inputTextKeyDown} bind:value={record[id]}>
+            <input type="text" disabled={disabled} key="{id}" on:keydown={inputTextKeyDown} bind:value={record[id]}>
           {:else if rowProps.type == 'input[check]'}
             {#if record[id] == 1}
-              <input type="checkbox" key="{id}" on:change={() => checkBoxChange(event, id, record[id])} checked={true}>
+              <input type="checkbox" disabled={disabled} key="{id}" on:change={() => checkBoxChange(event, id, record[id])} checked={true}>
             {:else}
-              <input type="checkbox" key="{id}" on:change={() => checkBoxChange(event, id, record[id])} hecked={false}>
+              <input type="checkbox" disabled={disabled} key="{id}" on:change={() => checkBoxChange(event, id, record[id])} hecked={false}>
             {/if}
           {:else if rowProps.type == 'td'}
             {record[id]}
@@ -393,13 +394,13 @@
       {/if}
       <td colspan="4" style="text-align:right">
         {#if buttonAddRow != false}
-          <button class="btn btn-primary" on:click={addRow}> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</button>
+          <button disabled={disabled} class="btn btn-primary" on:click={addRow}> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</button>
         {/if}
         {#if buttonAddRecord != false}
-          <a class="btn btn-secondary" on:click|preventDefault={() => {navigate(buttonAddRecord)}} href="{buttonAddRecord}"> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</a>
+          <a disabled={disabled} class="btn btn-secondary" on:click|preventDefault={() => {navigate(buttonAddRecord)}} href="{buttonAddRecord}"> <i class="fa fa-plus" style="margin-right:5px"></i>Agregar Registro</a>
         {/if}
         {#if buttonSave != false}
-          <button class="btn btn-success save-table" on:click={save}> <i class="fa fa-check" style="margin-right:5px"></i>Guardar Cambios</button>
+          <button disabled={disabled} class="btn btn-success save-table" on:click={save}> <i class="fa fa-check" style="margin-right:5px"></i>Guardar Cambios</button>
         {/if}
       </td>
     </tr>
