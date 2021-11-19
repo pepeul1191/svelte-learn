@@ -35,8 +35,24 @@
           valid = true;
         }
       }
+      if(validation.type == 'emptyOrMaxLength'){
+        //console.log('emptyOrMaxLength')
+        if(value.length > validation.length){
+          var message = `Máximo ${validation.length} carácteres`;
+          if (typeof validation.message !== 'undefined'){
+            message = validation.message;
+          }
+          validationMessage = message;
+          valid = false;
+          validationMessageClass = 'text-danger';
+        }else{
+          validationMessage = '';
+          validationMessageClass = '';
+          valid = true;
+        }
+      }
       if(validation.type == 'maxLength' && valid == true){
-        // console.log('maxLength')
+        //console.log('maxLength')
         if(value.length > validation.length){
           var message = `Máximo ${validation.length} carácteres`;
           if (typeof validation.message !== 'undefined'){

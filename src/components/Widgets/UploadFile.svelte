@@ -1,4 +1,6 @@
+<svelte:options accessors={true} />
 <script>
+  import { afterUpdate } from 'svelte';
   import axios from 'axios';
   export let url = 'upload';
   export let urlFile = 'E';
@@ -32,7 +34,17 @@
     display: 'true',
   };
   export let validationMessage = '';
+  let inputFile;
   let validationMessageClass = '';
+  let disabledUpload = true;
+  let disabledView = true;
+
+  afterUpdate(() => {
+    if(urlFile != 'E'){
+      disabledUpload = false;
+      disabledView = false;
+    }
+  });
 
   const clearMessage = () => {
     validationMessage = '';
@@ -44,38 +56,19 @@
     el.click();
   };
 
-  const uploadFile = () => {
-    var inputFile = document.querySelector('input[name="file"]').files[0];
+  const onFileSelected =(e)=>{
+    inputFile = document.querySelector('input[name="file"]').files[0];
     if((inputFile.size / Math.pow(1024,2)) < validationSize.size){
       if(validationExtension.allowed.includes(inputFile.type)){
-        var formData = new FormData();
-        formData.append(`${fileName}`, inputFile);
-        axios.post(`${url}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then(function (response) {
-          // handle success
-          console.log(response);
-          urlFile = response.data;
-          validationMessage = 'Se cargó el archivo con éxito';
-          validationMessageClass = 'text-success';
-          valid = true;
-          setTimeout(clearMessage, 5000);
-        })
-        .catch(function (error) {
-          // handle error
-          console.error(error);
-          validationMessage = 'Ocurrió un error en subir el archivo';
-          validationMessageClass = 'text-danger';
-          valid = false;
-          setTimeout(clearMessage, 5000);
-        });
+        disabledUpload = false;
+        validationMessageClass = '';
+        validationMessage = '';
       }else{
         console.error(`Archivo seleccionado no es de extensión ${validationExtension.allowed}`);
         validationMessage = validationExtension.message;
         validationMessageClass = 'text-danger';
         valid = false;
+        disabledUpload = true;
         setTimeout(clearMessage, 5000);
       }
     }else{
@@ -83,8 +76,36 @@
       validationMessage = validationSize.message;
       validationMessageClass = 'text-danger';
       valid = false;
+      disabledUpload = true;
       setTimeout(clearMessage, 5000);
     }
+  }
+
+  const uploadFile = () => {
+    var formData = new FormData();
+    formData.append(`${fileName}`, inputFile);
+    axios.post(`${url}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(function (response) {
+      // handle success
+      console.log(response);
+      urlFile = response.data;
+      validationMessage = 'Se cargó el archivo con éxito';
+      validationMessageClass = 'text-success';
+      valid = true;
+      setTimeout(clearMessage, 5000);
+      disabledView = false;
+    })
+    .catch(function (error) {
+      // handle error
+      console.error(error);
+      validationMessage = 'Ocurrió un error en subir el archivo';
+      validationMessageClass = 'text-danger';
+      valid = false;
+      setTimeout(clearMessage, 5000);
+    });
   };
 
   const viewFile = () => {
@@ -104,21 +125,23 @@
   <button class="btn {chooserButton.class}" on:click="{selectFile}" disabled={disabled} >
     <i class="fa {chooserButton.icon}" aria-hidden="true"></i>{chooserButton.label}
   </button>
-  <button class="btn {uploadButton.class}" on:click="{uploadFile}" disabled={disabled} >
+  <button class="btn {uploadButton.class}" on:click="{uploadFile}" disabled={disabled || disabledUpload} >
     <i class="fa {uploadButton.icon}" aria-hidden="true"></i>{uploadButton.label} 
   </button>
   {#if viewButton.display}
-  <button class="btn {viewButton.class}" on:click="{viewFile}" disabled={disabled} >
+  <button class="btn {viewButton.class}" on:click="{viewFile}" disabled={disabled || disabledView} >
     <i class="fa {viewButton.icon}" aria-hidden="true"></i>{viewButton.label} 
   </button>
   {/if}
 </div>
-<input type="file" class="" id="btnFile" name="file">
+<input type="file" class="" id="btnFile" name="file" on:change={(e)=>onFileSelected(e)} bind:this={inputFile}>
+{#if validationMessage != false}
 <div class="col-sm-12 validation-message">
   <small id="validationHelp" class="{validationMessageClass}">
     {validationMessage}
   </small>
 </div>
+{/if}
 
 <style>
   input[type="file"] {

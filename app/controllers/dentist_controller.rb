@@ -248,7 +248,6 @@ class DentistController < ApplicationController
             tmp = DentistBranch.where(
               :id => e['id']
             ).first
-            puts e
             tmp.branch_id = e['branch_id']
             tmp.save
           end
@@ -277,4 +276,52 @@ class DentistController < ApplicationController
 		status status
 		resp
 	end
+
+  post '/dentist/detail/save' do
+    resp = nil
+		status = 200
+		payload = JSON.parse(request.body.read)
+    id = payload['id']
+		cop = payload['cop']
+    name = payload['name']
+    image = payload['image']
+    rne = payload['rne']
+		error = false
+		execption = nil
+		DB.transaction do
+			begin
+        if id == 'E'
+          n = Dentist.new(
+            :cop => cop,
+            :name => name,
+            :image => image,
+            :rne => rne,
+          )
+          n.save
+          resp = n.id.to_s
+        else
+          e = Dentist.where(:id => id).first
+          e.name = name
+          e.cop = cop
+          e.rne = rne
+          e.image = image
+          e.save
+          resp = ''
+        end
+			rescue Exception => e
+        puts e.backtrace
+				Sequel::Rollback
+				error = true
+				execption = e
+			end
+		end
+		if error == true
+			status = 500
+			resp = [
+				'Se ha producido un error en crear el dentista',
+				execption.message].to_json
+		end
+		status status
+		resp
+  end
 end

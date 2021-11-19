@@ -168,3 +168,4 @@ Fuentes Svelte:
 + https://blog.openreplay.com/the-ultimate-guide-to-getting-started-with-the-rollup-js-javascript-bundler
 + https://github.com/sveltejs/svelte/issues/892
 + https://svelte.dev/repl/43bfe9802c88462aac11b87025b9534d?version=3.29.4 Components: Event Dispatcher: from child to parent
++ https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=3.44.1 input file

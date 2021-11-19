@@ -260,9 +260,11 @@
           edits: dataToSend.edit,
           deletes: dataToSend.delete,
           extra: extraData,
-        }), {headers: {
-          'Content-Type': 'application/json',
-        }})
+        }), {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
         .then(function (response) {
           response.data[1].forEach(created => {
             dataSearch(recordId, created.tmp)[recordId] = created[recordId];

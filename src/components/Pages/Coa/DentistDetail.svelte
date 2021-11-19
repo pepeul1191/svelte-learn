@@ -5,7 +5,7 @@
   import DataTable from '../../Widgets/DataTable.svelte';
   import AlertMessage from '../../Widgets/AlertMessage.svelte';
   import { alertMessage as alertMessageStore} from '../../Stores/alertMessage.js';
-  import { getDentistById } from '../../../services/dentist_service.js';
+  import { getDentistById, saveDentistDetail } from '../../../services/dentist_service.js';
   export let id;
   export let disabled = false;
   let title = '';
@@ -13,10 +13,12 @@
   let alertMessageProps = {};
   let dentistSpecialismDataTable;
   let dentistBranchDataTable;
-  let name = '';
-  let cop = '';
-  let rne = '';
-
+  let imageUploadFile = '';
+  let name = ''; let inputName; let nameValid = false;
+  let cop = ''; let inputCOP; let copValid = false;
+  let rne = ''; let inputRNE; let rneValid = true;
+  let imageURL = 'E';
+  
   onMount(() => {    
     alertMessageStore.subscribe(value => {
       if(value != null){
@@ -53,12 +55,12 @@
   };
 
   const loadDentist = (id) => {
-    var resp = getDentistById(id);
-    resp.then((resp) => {
+    getDentistById(id).then((resp) => {
       var data = resp.data;
       name = data.name;
       rne = data.rne;
       cop = data.cop;
+      imageURL = data.image;
     }).catch((resp) =>  {
       disabled = true;
       if(resp.status == 404){
@@ -70,7 +72,40 @@
   };
 
   const saveDetail = () => {
-
+    // run validations
+    inputName.validate();
+    inputCOP.validate();
+    inputRNE.validate();
+    // check image url
+    if(imageURL == 'E'){
+      imageURL = 'assets/img/default-user.png'
+    }
+    // check if true
+    if(nameValid && rneValid && copValid){
+      var params = {
+        id: id,
+        name: name,
+        cop: cop,
+        rne: rne,
+        image: imageURL,
+      };
+      saveDentistDetail(params).then((resp) => {
+        var data = resp.data;
+        if(data != ''){
+          id = data;
+          title = 'Editar Dentista';
+          launchAlert(null, 'Se ha creado un nuevo dentista', 'success');
+        }else{
+          launchAlert(null, 'Se ha editado un dentista', 'success');
+        }
+      }).catch((resp) =>  {
+        if(resp.status == 404){
+          launchAlert(null, 'Recurso guardar detalle de dentista no existe en el servidor', 'danger');
+        }else{
+          launchAlert(null, 'Ocurrió un error en guardar los datos del dentista', 'danger');
+        }
+      })
+    }
   };
 </script>
 
@@ -92,31 +127,38 @@
         bind:value={name}
         placeholder={'Ingrese nombre'} 
         disabled={disabled}
+        validations={[
+          {type:'notEmpty', message: 'Debe de ingresar un nombre'},
+          {type:'maxLength', length: 50, message: 'Nombre máximo 50 letras'},
+        ]}
+        bind:valid={nameValid} 
+        bind:this={inputName}
       />
     </div>
     <div class="col-md-3">
       <div class="form-group">
-      <UploadFile 
-        label={'Selecionar Archivo'}
-        fileName={'file'} 
-        url={`${BASE_URL}upload`} 
-        baseUrlFile={`${BASE_URL}`}  
-        chooserButton={
-          {label: 'Buscar', icon: 'fa-grav', class: 'btn-info'}
-        }
-        uploadButton={
-          {label: 'Subir', icon: 'fa-shower', class: 'btn-secondary'}
-        }
-        viewButton={
-          {label: 'Ver', icon: 'fa-vcard', class: 'btn-primary', display: true}
-        } 
-        validationSize={
-          {size: 2.6, message: 'Máximo 2 MB'}
-        }
-        validationExtension={
-          {allowed: ['image/png', 'image/jpg', 'image/jpeg'], message: 'Sólo Imágenes'}
-        }
-        disabled={disabled}
+        <UploadFile bind:this={imageUploadFile} 
+          label={'Selecionar Archivo'}
+          fileName={'file'} 
+          url={`${BASE_URL}upload`} 
+          baseUrlFile={`${BASE_URL}`}  
+          chooserButton={
+            {label: 'Buscar', icon: 'fa-grav', class: 'btn-info'}
+          }
+          uploadButton={
+            {label: 'Subir', icon: 'fa-shower', class: 'btn-secondary'}
+          }
+          viewButton={
+            {label: 'Ver', icon: 'fa-vcard', class: 'btn-primary', display: true}
+          } 
+          validationSize={
+            {size: 2.6, message: 'Máximo 2 MB'}
+          }
+          validationExtension={
+            {allowed: ['image/png', 'image/jpg', 'image/jpeg'], message: 'Sólo Imágenes'}
+          }
+          disabled={disabled}
+          bind:urlFile={imageURL}
         />
       </div>
     </div>
@@ -126,6 +168,12 @@
         bind:value={cop}
         placeholder={'COP'} 
         disabled={disabled}
+        validations={[
+          {type:'notEmpty', message: 'Debe de ingresar un nombre'},
+          {type:'maxLength', length: 5, message: 'COP máximo 5 letras'},
+        ]}
+        bind:valid={copValid} 
+        bind:this={inputCOP}
       />
     </div>
     <div class="col-md-1">
@@ -134,6 +182,11 @@
         bind:value={rne}
         placeholder={'RNE'} 
         disabled={disabled}
+        validations={[
+          {type:'emptyOrMaxLength', length: 5, message: 'RNE máximo 5 letras'},
+        ]}
+        bind:valid={rneValid} 
+        bind:this={inputRNE}
       />
     </div>
     <div class="col-md-2" style="padding-top:27px;">
