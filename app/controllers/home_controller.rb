@@ -9,6 +9,9 @@ class HomeController < ApplicationController
     '/coa/dentist', 
     '/coa/dentist/edit/:id', 
     '/coa/dentist/add',
+    '/coa/branch', 
+    '/coa/branch/edit/:id', 
+    '/coa/branch/add',
   ].each do |path|
     get path do
       locals = {

@@ -13,6 +13,7 @@
 			]}, 
 			{name: 'COA', url: '#', active: true, items: [
 				{name: 'Gestión de Dentistas', url: '/coa/dentist', active: true}, 
+				{name: 'Gestión de Sedes', url: '/coa/branch', active: true}, 
 			]}, 
 		];
 	});  

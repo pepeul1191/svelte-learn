@@ -16,6 +16,8 @@
   import Specialism from '../Pages/MasterData/Specialism.svelte';
   import Dentist from '../Pages/Coa/Dentist.svelte';
   import DentistDetail from '../Pages/Coa/DentistDetail.svelte';
+  import Branch from '../Pages/Coa/Branch.svelte';
+  import BranchDetail from '../Pages/Coa/BranchDetail.svelte';
   export let url = '';
   export let basepath = '/';
   let modalComponent;
@@ -70,6 +72,9 @@
     <Route path="/coa/dentist" component="{Dentist}" />
     <Route path="/coa/dentist/add" component="{DentistDetail}" />
     <Route path="/coa/dentist/edit/:id" let:params><DentistDetail id={params.id}/></Route>
+    <Route path="/coa/branch" component="{Branch}" />
+    <Route path="/coa/branch/add" component="{BranchDetail}" />
+    <Route path="/coa/branch/edit/:id" let:params><BranchDetail id={params.id}/></Route>
     <Route path="/*" component="{Redirect404}" />
   </div>
 </Router>

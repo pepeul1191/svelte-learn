@@ -24,4 +24,24 @@ class BranchController < ApplicationController
 		status status
 		resp
 	end
+
+	get '/branch/list_by_type' do
+		resp = nil
+		status = 200
+		branch_type_id = params[:branch_type_id]
+		begin
+			resp = Branch.select(:id, :name, :address).where(
+					:branch_type_id => branch_type_id
+				).to_a.to_json
+		rescue Exception => e
+			branch_type = ['Lima', 'Provincia']
+			resp = [
+					'Se ha producido un error en buscar las sedes de #{branch_type[branch_type_id]} ',
+					e.message
+				].to_json
+			status = 500
+		end
+		status status
+		resp
+	end
 end

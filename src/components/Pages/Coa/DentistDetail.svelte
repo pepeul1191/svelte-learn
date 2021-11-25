@@ -8,6 +8,7 @@
   import { getDentistById, saveDentistDetail } from '../../../services/dentist_service.js';
   export let id;
   export let disabled = false;
+  let disabledInCreate = true;
   let title = '';
   let alertMessage = null;
   let alertMessageProps = {};
@@ -30,9 +31,11 @@
     if(id === undefined){
       title = 'Crear Dentista';
       id = 'E';
+      disabledInCreate = true;
     }else{
       title = 'Editar Dentista';
       loadDentist(id);
+      disabledInCreate = false;
     }
     // dentist specialism table
     dentistSpecialismDataTable.urlServices.list = `dentist/specialism/list?dentist_id=${id}`;
@@ -95,6 +98,7 @@
           id = data;
           title = 'Editar Dentista';
           launchAlert(null, 'Se ha creado un nuevo dentista', 'success');
+          disabledInCreate = false;
         }else{
           launchAlert(null, 'Se ha editado un dentista', 'success');
         }
@@ -238,7 +242,7 @@
 					save500: 'Ocurrió un error para guardar los cambios de la table de especialidades del dentista',
 					save200: 'Se han actualizado los registros de la tabla de especialidades del dentista',
 				}},
-        disabled={disabled}
+        disabled={disabledInCreate & disabled}
 			/>
     </div>
     <div class="col-md-6">
@@ -290,7 +294,7 @@
 					save500: 'Ocurrió un error para guardar los cambios de la table de sedes del dentista',
 					save200: 'Se han actualizado los registros de la tabla de sedes del dentista',
 				}}
-        disabled={disabled}
+        disabled={disabledInCreate & disabled}
 			/>
     </div>
   </div>
