@@ -5,6 +5,7 @@
   import { navigate } from 'svelte-routing';
   import AlertMessage from './AlertMessage.svelte';
   import Autocomplete from './Autocomplete.svelte';
+  import UploadFile from './UploadFile.svelte';
   import random from '../Helpers/random.js';
   import { alertMessage as alertMessageStore} from '../Stores/alertMessage.js';
   export let headers;
@@ -28,7 +29,6 @@
     save500: 'Ocurrió un error para guardar los cambios',
     save200: 'Se han actualizado los registros de la tabla',
   };
-
 
   onMount(() => {
     if(pagination != false){
@@ -61,7 +61,7 @@
           if(key.includes('::')){
             var keyes = key.split('::');
             keyes.forEach(key => {
-              tmp[key]= record[key];  
+              tmp[key]= record[key];
             });
           }else{
             tmp[key]= record[key];
@@ -359,6 +359,12 @@
               bind:rowId={record[rowProps.rowId]} 
               on:autocompleteHintClick={autocompleteHintClick}
               bind:idKey={rowProps.rowId}
+            />
+          {:else if rowProps.type =='upload'}
+            <UploadFile 
+              table={true} 
+              urlFile={record.url} 
+              disabledView={false} 
             />
           {/if}
         {:else}

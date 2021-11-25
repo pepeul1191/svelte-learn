@@ -1,10 +1,13 @@
 <svelte:options accessors={true} />
 <script>
-  import { afterUpdate } from 'svelte';
+  import { afterUpdate, onMount } from 'svelte';
   import axios from 'axios';
+  import AlertMessage from './AlertMessage.svelte';
+  import { alertMessage as alertMessageStore} from '../Stores/alertMessage.js';
   export let url = 'upload';
   export let urlFile = 'E';
   export let fileName = 'file';
+  export let table = false;
   export let baseUrlFile = '/';
   export let label = 'Seleccionar Archivo';
   export let disabled = false;
@@ -18,7 +21,7 @@
   }; 
   export let valid = false;
   export let chooserButton= {
-    label: 'Seleccionar', 
+    label: 'Buscar', 
     icon: 'fa-search', 
     class: 'btn-primary'
   };
@@ -34,15 +37,34 @@
     display: 'true',
   };
   export let validationMessage = '';
+  export let validationMessageClass = '';
+  export let disabledUpload = true;
+  export let disabledView = true;
   let inputFile;
-  let validationMessageClass = '';
-  let disabledUpload = true;
-  let disabledView = true;
 
   afterUpdate(() => {
     if(urlFile != 'E'){
       disabledUpload = false;
       disabledView = false;
+    }
+  });
+
+  const launchAlert = (props) => {
+    alertMessageStore.set({
+      component: AlertMessage,
+      props: props
+    })
+  };
+
+  onMount(() => {    
+    if(table){
+      chooserButton.class = 'btn-upload-table';
+      uploadButton.class = 'btn-upload-table';
+      viewButton.class = 'btn-upload-table';
+    }else{
+      chooserButton.class = `btn ${chooserButton.class}`;
+      uploadButton.class = `btn ${uploadButton.class}`;
+      viewButton.class = `btn ${viewButton.class}`;
     }
   });
 
@@ -65,19 +87,35 @@
         validationMessage = '';
       }else{
         console.error(`Archivo seleccionado no es de extensión ${validationExtension.allowed}`);
-        validationMessage = validationExtension.message;
-        validationMessageClass = 'text-danger';
+        if(table){
+          launchAlert({
+            message: validationExtension.message,
+            type: 'danger',
+            timeOut: 5000
+          });
+        }else{
+          validationMessage = validationExtension.message;
+          validationMessageClass = 'text-danger';
+          setTimeout(clearMessage, 5000);
+        }
         valid = false;
         disabledUpload = true;
-        setTimeout(clearMessage, 5000);
       }
     }else{
       console.error(`Archivo seleccionado pesa ${(inputFile.size / Math.pow(1024,2)).toFixed(2)} MB, el máximo es ${validationSize.size} MB`);
-      validationMessage = validationSize.message;
-      validationMessageClass = 'text-danger';
+      if(table){
+        launchAlert({
+          message: validationSize.message,
+          type: 'danger',
+          timeOut: 5000
+        });
+      }else{
+        validationMessage = validationSize.message;
+        validationMessageClass = 'text-danger';
+        setTimeout(clearMessage, 5000);
+      }
       valid = false;
       disabledUpload = true;
-      setTimeout(clearMessage, 5000);
     }
   }
 
@@ -92,19 +130,35 @@
       // handle success
       console.log(response);
       urlFile = response.data;
-      validationMessage = 'Se cargó el archivo con éxito';
-      validationMessageClass = 'text-success';
+      if(table){
+        launchAlert({
+          message: 'Se cargó el archivo con éxito',
+          type: 'success',
+          timeOut: 5000
+        });
+      }else{
+        validationMessage = 'Se cargó el archivo con éxito';
+        validationMessageClass = 'text-success';
+        setTimeout(clearMessage, 5000);
+      }
       valid = true;
-      setTimeout(clearMessage, 5000);
       disabledView = false;
     })
     .catch(function (error) {
       // handle error
       console.error(error);
-      validationMessage = 'Ocurrió un error en subir el archivo';
-      validationMessageClass = 'text-danger';
-      valid = false;
+      if(table){
+        launchAlert({
+          message: 'Ocurrió un error en subir el archivo',
+          type: 'danger',
+          timeOut: 5000
+        });
+      }else{
+        validationMessage = 'Ocurrió un error en subir el archivo';
+        validationMessageClass = 'text-danger';
+      }
       setTimeout(clearMessage, 5000);
+      valid = false;
     });
   };
 
@@ -119,17 +173,18 @@
 
 </script>
 
-
+{#if !table}
 <label for="file" class="{validationMessageClass != 'text-success' ? validationMessageClass : ''}">{label}</label>
+{/if}
 <div>
-  <button class="btn {chooserButton.class}" on:click="{selectFile}" disabled={disabled} >
+  <button class="{chooserButton.class}" on:click="{selectFile}" disabled={disabled} >
     <i class="fa {chooserButton.icon}" aria-hidden="true"></i>{chooserButton.label}
   </button>
-  <button class="btn {uploadButton.class}" on:click="{uploadFile}" disabled={disabled || disabledUpload} >
+  <button class="{uploadButton.class}" on:click="{uploadFile}" disabled={disabled || disabledUpload} >
     <i class="fa {uploadButton.icon}" aria-hidden="true"></i>{uploadButton.label} 
   </button>
   {#if viewButton.display}
-  <button class="btn {viewButton.class}" on:click="{viewFile}" disabled={disabled || disabledView} >
+  <button class="{viewButton.class}" on:click="{viewFile}" disabled={disabled || disabledView} >
     <i class="fa {viewButton.icon}" aria-hidden="true"></i>{viewButton.label} 
   </button>
   {/if}
@@ -147,6 +202,19 @@
   input[type="file"] {
 		display: none;
 	}
+
+  .btn-upload-table{
+    border: 0px;
+    background: transparent;
+  }
+
+  .btn-upload-table:hover{
+    cursor: pointer;
+  }
+
+  .btn-upload-table i{
+    margin-right:7px;
+  }
 
   div .btn:not(:first-child) {
     margin-left: 10px;

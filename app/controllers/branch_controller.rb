@@ -44,4 +44,23 @@ class BranchController < ApplicationController
 		status status
 		resp
 	end
+
+	get '/branch/image/list' do 
+		resp = nil
+		status = 200
+		branch_id = params[:branch_id]
+		begin
+			resp = VWBranchImage.select(:id, :alt, :url).where(
+					:branch_id => branch_id
+				).to_a.to_json
+		rescue Exception => e
+			resp = [
+					'Se ha producido un error en listar las imágenes de la sede',
+					e.message
+				].to_json
+			status = 500
+		end
+		status status
+		resp
+	end
 end
