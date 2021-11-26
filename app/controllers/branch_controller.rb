@@ -63,4 +63,77 @@ class BranchController < ApplicationController
 		status status
 		resp
 	end
+
+	post '/branch/image/save' do
+    resp = nil
+    status = 200
+    payload = JSON.parse(request.body.read)
+    news = payload['news']
+    edits = payload['edits']
+    deletes = payload['deletes']
+		branch_id = payload['extra']['branch_id']
+    resp = []
+    array_news = []
+    error = false
+    execption = nil
+    DB.transaction do
+      begin
+        if news.length != 0
+          news.each do |n|
+						if n['url'] == 'E'
+							n['url'] = 'assets/img/default-branch.png'
+						end
+						# save new image
+            tmp = Image.new(
+              :alt => n['alt'],
+							:url => n['url']
+            )
+            tmp.save
+            t = {
+              :tmp => n['id'],
+              :id => tmp.id
+            }
+						array_news.push(t)
+						# save new image branch
+						bi = BranchImage.new(
+							:branch_id => branch_id,
+							:image_id => tmp.id
+						)
+						bi.save
+          end
+        end
+        if edits.length != 0
+          edits.each do |e|
+            tmp = Image.where(
+              :id => e['id']
+            ).first
+            tmp.alt = e['alt']
+						tmp.url = e['url']
+            tmp.save
+          end
+        end
+        if deletes.length != 0
+          deletes.each do |d|
+						BranchImage.where(:image_id => d['id']).delete
+            # Image.where(:id => d['id']).delete ???
+          end
+        end
+      rescue Exception => e
+				# puts e.backtrace
+        Sequel::Rollback
+        error = true
+        execption = e
+      end
+    end
+    if error == false
+      resp = ['Se ha registrado los cambios en las imágenes de la sede',array_news].to_json
+    else
+      status = 500
+      resp = [
+        'Se ha producido un error en guardar la tabla de imágenes de la sede',
+        execption.message].to_json
+    end
+    status status
+    resp
+  end
 end

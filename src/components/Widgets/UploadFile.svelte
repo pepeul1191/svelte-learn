@@ -1,16 +1,21 @@
 <svelte:options accessors={true} />
 <script>
-  import { afterUpdate, onMount } from 'svelte';
+  import { afterUpdate, onMount,createEventDispatcher } from 'svelte';
   import axios from 'axios';
   import AlertMessage from './AlertMessage.svelte';
+  import random from '../Helpers/random.js';
   import { alertMessage as alertMessageStore} from '../Stores/alertMessage.js';
+  export let inputFileId;
   export let url = 'upload';
   export let urlFile = 'E';
   export let fileName = 'file';
   export let table = false;
   export let baseUrlFile = '/';
+  export let tableKeyURL = 'url';
   export let label = 'Seleccionar Archivo';
   export let disabled = false;
+  export let tableRecordId = null;
+  export let tableRecordKey = null;
   export let validationSize = {
     size: 3, // MB, (MB = B / 1024^2) ... https://www.to-convert.com/en/computer/convert-byte-to-mb.php
     message: 'Archivo del tamaño supera el máximo permitido'
@@ -41,6 +46,7 @@
   export let disabledUpload = true;
   export let disabledView = true;
   let inputFile;
+  const dispatch = createEventDispatcher();
 
   afterUpdate(() => {
     if(urlFile != 'E'){
@@ -57,6 +63,7 @@
   };
 
   onMount(() => {    
+    inputFileId = random(20);
     if(table){
       chooserButton.class = 'btn-upload-table';
       uploadButton.class = 'btn-upload-table';
@@ -74,12 +81,12 @@
   };
 
   const selectFile = () => {
-    const el = document.querySelector('input[name="file"]');
+    const el = document.getElementById(inputFileId);
     el.click();
   };
 
   const onFileSelected =(e)=>{
-    inputFile = document.querySelector('input[name="file"]').files[0];
+    inputFile = document.getElementById(inputFileId).files[0];
     if((inputFile.size / Math.pow(1024,2)) < validationSize.size){
       if(validationExtension.allowed.includes(inputFile.type)){
         disabledUpload = false;
@@ -128,13 +135,19 @@
       }
     }).then(function (response) {
       // handle success
-      console.log(response);
+      // console.log(response);
       urlFile = response.data;
       if(table){
         launchAlert({
           message: 'Se cargó el archivo con éxito',
           type: 'success',
           timeOut: 5000
+        });
+        dispatch('fileUploaded', {
+          urlFile: urlFile,
+          key: tableKeyURL,
+          tableRecordId: tableRecordId,
+          tableRecordKey: tableRecordKey,
         });
       }else{
         validationMessage = 'Se cargó el archivo con éxito';
@@ -184,12 +197,12 @@
     <i class="fa {uploadButton.icon}" aria-hidden="true"></i>{uploadButton.label} 
   </button>
   {#if viewButton.display}
-  <button class="{viewButton.class}" on:click="{viewFile}" disabled={disabled || disabledView} >
+  <a class="{viewButton.class}" href={`${baseUrlFile}${urlFile}`} rel="noopener noreferrer" target="_blank" disabled={disabled || disabledView} >
     <i class="fa {viewButton.icon}" aria-hidden="true"></i>{viewButton.label} 
-  </button>
+  </a>
   {/if}
 </div>
-<input type="file" class="" id="btnFile" name="file" on:change={(e)=>onFileSelected(e)} bind:this={inputFile}>
+<input type="file" class="" id={inputFileId} name="file" on:change={(e)=>onFileSelected(e)} bind:this={inputFile}>
 {#if validationMessage != false}
 <div class="col-sm-12 validation-message">
   <small id="validationHelp" class="{validationMessageClass}">
@@ -206,10 +219,21 @@
   .btn-upload-table{
     border: 0px;
     background: transparent;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+  }
+
+  a{
+    text-decoration: none;
   }
 
   .btn-upload-table:hover{
     cursor: pointer;
+  }
+
+  .btn-upload-table:disabled, .btn-upload-view:disabled{
+    color:#8895a1;
   }
 
   .btn-upload-table i{

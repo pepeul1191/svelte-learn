@@ -136,9 +136,25 @@
 
   function autocompleteHintClick(event){
     if(typeof(event) !== 'undefined' && event !== null){
-      console.log(event.detail)
+      // console.log(event.detail)
       var rowKey = event.detail.rowId;
       var idKey = event.detail.idKey;
+      if(String(rowKey).includes('tmp')){
+        if(observerSearch(idKey, rowKey, observer.new) == false){
+          observer.new.push({[idKey]: rowKey})
+        }
+      }else{
+        if(observerSearch(idKey, rowKey, observer.edit) == false){
+          observer.edit.push({[idKey]: rowKey})
+        }
+      }
+    }
+  };
+
+  function fileUploaded(event){
+    if(typeof(event) !== 'undefined' && event !== null){
+      var idKey = event.detail.tableRecordKey;
+      var rowKey = event.detail.tableRecordId;
       if(String(rowKey).includes('tmp')){
         if(observerSearch(idKey, rowKey, observer.new) == false){
           observer.new.push({[idKey]: rowKey})
@@ -363,8 +379,13 @@
           {:else if rowProps.type =='upload'}
             <UploadFile 
               table={true} 
-              urlFile={record.url} 
+              bind:urlFile={record.url} 
               disabledView={false} 
+              on:fileUploaded={fileUploaded}
+              bind:rowId={record[rowProps.rowId]} 
+              bind:tableKeyURL={rowProps.tableKeyURL} 
+              bind:tableRecordKey={rowProps.tableRecordKey} 
+              bind:tableRecordId={record.id}
             />
           {/if}
         {:else}

@@ -72,22 +72,24 @@
 						style: 'color: red; display:none;',
 						type: 'id',
 					},
-					name:{
-						type: 'td',
+					alt:{
+						type: 'input[text]',
 					},
           url:{
 						type: 'upload',
             style: 'text-align: center',
+            tableKeyURL: 'url',
+            tableRecordKey: 'id',
 					},
-          /*
-          'branch_name::branch_id':{
-						type: 'autocomplete',
-            url: 'branch/search',
-            recordValue: 'branch_name',
-            recordId: 'branch_id',
-            rowId: 'id',
+          actions:{
+						type: 'actions',
+						buttons: [
+							{
+								type: 'delete',
+							},
+						],
+						style: 'text-align:center;'
 					},
-          */
 				}}
 				headers={[
 					{
@@ -100,6 +102,10 @@
           {
 						caption: 'Imágenes de la Sede',
             style: 'text-align: center',
+					},
+          {
+						caption: 'Operaciones',
+						style:'text-align: center;',
 					},
 				]}
 				messages={{
